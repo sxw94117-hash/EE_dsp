@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="谱线：面向数字信号处理的学习台，包含系统笔记、公式速查、交互实验室与练习题库。" />
+    <meta name="theme-color" content="#1d4ed8" />
+    <title>谱线 · 数字信号处理学习台</title>
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+    <script>
+      (function () {
+        try {
+          var raw = localStorage.getItem('spx.theme');
+          var t = raw ? JSON.parse(raw) : 'auto';
+          if (t !== 'dark' && t !== 'light') t = 'auto';
+          var dark = t === 'dark' || (t === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+          document.documentElement.dataset.themePref = t;
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="stylesheet" href="assets/vendor/katex/katex.min.css" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261030" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到主要内容</a>
+
+    <div class="app">
+      <aside class="sidebar" id="sidebar" aria-label="主导航">
+        <a class="brand" href="#/home" aria-label="谱线首页">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M3 17h4l3-9 5 17 4-12 3 7h7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="7" cy="17" r="1.6" fill="currentColor" />
+              <circle cx="15" cy="25" r="1.6" fill="currentColor" />
+              <circle cx="19" cy="13" r="1.6" fill="currentColor" />
+            </svg>
+          </span>
+          <span class="brand-text">
+            <strong>谱线</strong>
+            <small>DSP 学习台</small>
+          </span>
+        </a>
+
+        <nav class="nav">
+          <p class="nav-label">学习</p>
+          <a class="nav-link" data-nav="home" href="#/home"><span class="nav-ico" data-icon="home"></span><span>概览</span></a>
+          <a class="nav-link" data-nav="notes" href="#/notes"><span class="nav-ico" data-icon="book"></span><span>笔记</span><span class="nav-count" id="nav-note-count"></span></a>
+          <a class="nav-link" data-nav="cheatsheet" href="#/cheatsheet"><span class="nav-ico" data-icon="sigma"></span><span>公式速查</span></a>
+          <a class="nav-link" data-nav="lab" href="#/lab"><span class="nav-ico" data-icon="flask"></span><span>交互实验室</span><span class="nav-badge">5</span></a>
+
+          <p class="nav-label">练习</p>
+          <a class="nav-link" data-nav="quiz" href="#/quiz"><span class="nav-ico" data-icon="quiz"></span><span>题库</span></a>
+          <a class="nav-link" data-nav="mistakes" href="#/mistakes"><span class="nav-ico" data-icon="bookmark"></span><span>错题本</span><span class="nav-count" id="nav-mistake-count"></span></a>
+        </nav>
+
+        <div class="sidebar-spacer"></div>
+
+        <div class="sidebar-progress" id="sidebar-progress">
+          <div class="sp-head">
+            <span>整体进度</span>
+            <strong id="sp-percent">0%</strong>
+          </div>
+          <div class="sp-bar"><i id="sp-fill"></i></div>
+          <p id="sp-caption">从第一节笔记开始吧</p>
+        </div>
+
+        <div class="sidebar-foot">
+          <button class="theme-btn" id="theme-btn" type="button" aria-label="切换主题">
+            <span class="nav-ico" data-icon="sun"></span>
+            <span id="theme-label">跟随系统</span>
+          </button>
+          <button class="kbd-btn" id="search-btn-side" type="button">
+            <span class="nav-ico" data-icon="search"></span>
+            <span>搜索</span>
+            <kbd>Ctrl K</kbd>
+          </button>
+        </div>
+      </aside>
+      <div class="scrim" id="scrim" hidden></div>
+
+      <div class="app-main">
+        <header class="topbar">
+          <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-label="打开导航" aria-expanded="false">
+            <span data-icon="menu"></span>
+          </button>
+          <div class="crumb" id="crumb">
+            <span>学习</span><span class="crumb-sep">/</span><strong>概览</strong>
+          </div>
+          <div class="topbar-actions">
+            <button class="search-trigger" id="search-btn" type="button">
+              <span data-icon="search"></span>
+              <span class="search-trigger-text">搜索笔记、公式…</span>
+              <kbd>Ctrl K</kbd>
+            </button>
+            <button class="icon-btn" id="theme-btn-top" type="button" aria-label="切换主题">
+              <span data-icon="moon"></span>
+            </button>
+          </div>
+        </header>
+
+        <main class="view" id="main" tabindex="-1"></main>
+
+        <footer class="site-foot">
+          <p><strong>谱线</strong> · 把数字信号处理学成一条完整的链路。</p>
+          <p class="foot-meta">KaTeX 公式排版 · 学习进度仅保存在本地浏览器</p>
+        </footer>
+      </div>
+    </div>
+
+    <nav class="bottom-nav" aria-label="移动端导航">
+      <a data-nav="home" href="#/home"><span data-icon="home"></span><em>概览</em></a>
+      <a data-nav="notes" href="#/notes"><span data-icon="book"></span><em>笔记</em></a>
+      <a data-nav="lab" href="#/lab"><span data-icon="flask"></span><em>实验室</em></a>
+      <a data-nav="quiz" href="#/quiz"><span data-icon="quiz"></span><em>题库</em></a>
+      <a data-nav="mistakes" href="#/mistakes"><span data-icon="bookmark"></span><em>错题</em></a>
+    </nav>
+
+    <div class="palette" id="palette" hidden>
+      <div class="palette-backdrop" data-close-palette></div>
+      <div class="palette-panel" role="dialog" aria-modal="true" aria-label="站内搜索">
+        <div class="palette-input-wrap">
+          <span data-icon="search"></span>
+          <input id="palette-input" type="search" placeholder="搜索笔记、公式、章节…" autocomplete="off" spellcheck="false" />
+          <kbd>Esc</kbd>
+        </div>
+        <div class="palette-results" id="palette-results"></div>
+        <div class="palette-foot">
+          <span><kbd>↑</kbd><kbd>↓</kbd> 选择</span>
+          <span><kbd>Enter</kbd> 打开</span>
+          <span><kbd>Esc</kbd> 关闭</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="scroll-progress" id="scroll-progress" hidden><i></i></div>
+
+    <noscript>
+      <div class="noscript">本站需要启用 JavaScript 才能使用笔记、公式与交互演示。</div>
+    </noscript>
+
+    <script src="assets/vendor/katex/katex.min.js"></script>
+    <script src="assets/vendor/katex/auto-render.min.js"></script>
+    <script src="assets/js/data-notes.js?v=20261030"></script>
+    <script src="assets/js/data-formulas.js?v=20261030"></script>
+    <script src="assets/js/data-quiz.js?v=20261030"></script>
+    <script src="assets/js/markdown.js?v=20261030"></script>
+    <script src="assets/js/lab.js?v=20261030"></script>
+    <script src="assets/js/app.js?v=20261030"></script>
+  </body>
+</html>

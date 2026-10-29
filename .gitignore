@@ -1,0 +1,13 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+
+# local archives
+*.zip
+*.7z
+*.rar
+
+# logs
+*.log
