@@ -258,3 +258,41 @@ $$
 - 压缩包根目录就是站点根目录，解压后双击 `start-server.bat` 即可本地预览；也可以直接拖到 Netlify Drop 发布。
 
 本项目没有第三方运行依赖；唯一需要保留的“库”是 `assets/vendor/katex/`。KaTeX 使用 MIT 许可证，许可证原文见 `assets/vendor/katex/LICENSE`。
+
+---
+
+## 8. 更新线上版本（已配置 GitHub Pages）
+
+线上地址：<https://sxw94117-hash.github.io/EE_dsp/>  
+仓库地址：<https://github.com/sxw94117-hash/EE_dsp>
+
+修改内容后，在 `dsp-site` 目录执行：
+
+```bash
+git add -A
+git commit -m "更新内容"
+git push
+```
+
+GitHub Pages 会自动重新构建，通常 1 分钟左右生效。记住同时提升 `index.html` 里的 `?v=` 版本号。
+
+本机仓库为了访问 GitHub 配置了 Clash 代理：
+
+```text
+http.proxy  = http://127.0.0.1:7890
+https.proxy = http://127.0.0.1:7890
+```
+
+如果以后 Clash 端口变了，执行：
+
+```bash
+git config http.proxy http://127.0.0.1:你的端口
+git config https.proxy http://127.0.0.1:你的端口
+```
+
+如果关闭了代理、GitHub 又能直连，可以取消代理：
+
+```bash
+git config --unset http.proxy
+git config --unset https.proxy
+```
