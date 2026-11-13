@@ -1,4 +1,4 @@
-/* 谱线 · 轻量 Markdown 渲染器 + KaTeX 辅助 */
+/* 数字信号处理 · 轻量 Markdown 渲染器 + KaTeX 辅助 */
 
 const MD = (() => {
   const CALLOUT_ICONS = {

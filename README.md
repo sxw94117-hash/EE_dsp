@@ -1,6 +1,8 @@
-# 谱线 · DSP 学习台
+# 数字信号处理 · DSP 学习台
 
 一个纯静态的数字信号处理学习网站：系统笔记、公式速查、Canvas 交互实验、练习题与错题本。
+
+**作者：** 不止EE · 小红书 [@EE_ELEC_666](https://www.xiaohongshu.com/search_result/?keyword=EE_ELEC_666)
 
 **在线访问：** <https://sxw94117-hash.github.io/EE_dsp/>  
 **源码仓库：** <https://github.com/sxw94117-hash/EE_dsp>
@@ -201,10 +203,10 @@ $$
 浏览器缓存。`index.html` 里给 CSS / JS 加了版本参数：
 
 ```html
-<script src="assets/js/app.js?v=20261030"></script>
+<script src="assets/js/app.js?v=20261113"></script>
 ```
 
-每次修改 `assets/js/*.js` 或 `style.css` 后，把 `?v=20261030` 改成任意新值（例如当天日期 `20261101`），再刷新，所有访客都会拿到新文件。
+每次修改 `assets/js/*.js` 或 `style.css` 后，把 `?v=20261113` 改成任意新值（例如当天日期 `20261114`），再刷新，所有访客都会拿到新文件。
 
 ---
 
@@ -254,7 +256,7 @@ $$
 ## 7. 交付与备份
 
 - 源码目录：`dsp-site/`
-- 可直接发送的压缩包：`谱线-DSP学习台.zip`
+- 可直接发送的压缩包：`数字信号处理-DSP学习台.zip`
 - 压缩包根目录就是站点根目录，解压后双击 `start-server.bat` 即可本地预览；也可以直接拖到 Netlify Drop 发布。
 
 本项目没有第三方运行依赖；唯一需要保留的“库”是 `assets/vendor/katex/`。KaTeX 使用 MIT 许可证，许可证原文见 `assets/vendor/katex/LICENSE`。
@@ -276,21 +278,14 @@ git push
 
 GitHub Pages 会自动重新构建，通常 1 分钟左右生效。记住同时提升 `index.html` 里的 `?v=` 版本号。
 
-本机仓库为了访问 GitHub 配置了 Clash 代理：
-
-```text
-http.proxy  = http://127.0.0.1:7890
-https.proxy = http://127.0.0.1:7890
-```
-
-如果以后 Clash 端口变了，执行：
+如果 `git push` 遇到网络连接失败，打开 Clash / 系统代理后重试；也可以在仓库里临时指定代理：
 
 ```bash
-git config http.proxy http://127.0.0.1:你的端口
-git config https.proxy http://127.0.0.1:你的端口
+git config http.proxy http://127.0.0.1:7890
+git config https.proxy http://127.0.0.1:7890
 ```
 
-如果关闭了代理、GitHub 又能直连，可以取消代理：
+网络恢复直连后取消：
 
 ```bash
 git config --unset http.proxy

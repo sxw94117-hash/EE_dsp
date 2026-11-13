@@ -1,5 +1,5 @@
 /* ==========================================================================
-   谱线 · DSP 学习台 — 设计系统
+   数字信号处理 · DSP 学习台 — 设计系统
    ========================================================================== */
 
 :root {
@@ -28,6 +28,8 @@
   --red-soft: #fdebed;
   --violet: #7c3aed;
   --violet-soft: #f1eafe;
+  --xhs: #d91f3a;
+  --xhs-soft: #fff0f3;
   --shadow-sm: 0 1px 2px rgba(15, 29, 53, 0.04), 0 4px 12px rgba(15, 29, 53, 0.04);
   --shadow: 0 12px 34px rgba(19, 39, 78, 0.08);
   --shadow-lg: 0 30px 70px rgba(19, 39, 78, 0.14);
@@ -67,6 +69,8 @@ html[data-theme="dark"] {
   --red-soft: #3a161b;
   --violet: #b28cff;
   --violet-soft: #261a44;
+  --xhs: #ff7085;
+  --xhs-soft: #3a151c;
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.18);
   --shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
   --shadow-lg: 0 34px 80px rgba(0, 0, 0, 0.45);
@@ -569,6 +573,21 @@ html[data-theme="dark"] .nav-link.active {
 .foot-meta {
   opacity: 0.85;
 }
+.foot-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.foot-author {
+  color: var(--faint);
+}
+.foot-author a {
+  color: var(--xhs);
+  font-weight: 600;
+}
+.foot-author a:hover {
+  text-decoration: underline;
+}
 
 .bottom-nav {
   display: none;
@@ -691,6 +710,15 @@ html[data-theme="dark"] .nav-link.active {
 }
 .btn-primary:hover {
   box-shadow: 0 14px 30px rgba(37, 99, 235, 0.32);
+  transform: translateY(-1px);
+}
+.btn-xhs {
+  color: #fff;
+  background: linear-gradient(135deg, #ff4d67, var(--xhs));
+  box-shadow: 0 9px 20px rgba(255, 36, 66, 0.22);
+}
+.btn-xhs:hover {
+  box-shadow: 0 13px 28px rgba(255, 36, 66, 0.3);
   transform: translateY(-1px);
 }
 .btn-ghost {
@@ -1172,6 +1200,63 @@ html[data-theme="dark"] .nav-link.active {
 }
 .quick-card .tag {
   margin-top: 7px;
+}
+
+.creator-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-top: 22px;
+  padding: clamp(19px, 2.6vw, 27px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(560px 240px at 100% -20%, var(--xhs-soft), transparent 72%),
+    var(--surface);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.creator-avatar {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+  border-radius: 17px;
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: linear-gradient(140deg, #ff6b7f, var(--xhs));
+  box-shadow: 0 10px 24px rgba(255, 36, 66, 0.22);
+}
+.creator-main {
+  min-width: 0;
+}
+.creator-main .eyebrow {
+  color: var(--xhs);
+}
+.creator-main h2 {
+  margin: 5px 0 5px;
+  font-size: 21px;
+  letter-spacing: -0.01em;
+}
+.creator-main p {
+  max-width: 720px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.creator-main p strong {
+  color: var(--xhs);
+}
+.creator-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
 }
 
 .chapter-grid {
@@ -3733,6 +3818,16 @@ select.input-select:focus {
   }
   .continue-card {
     padding: 20px;
+  }
+  .creator-card {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .creator-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    font-size: 15px;
   }
   .today-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

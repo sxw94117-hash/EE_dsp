@@ -1,4 +1,4 @@
-/* 谱线 · 课程数据：章节与笔记正文（Markdown + KaTeX） */
+/* 数字信号处理 · 课程数据：章节与笔记正文（Markdown + KaTeX） */
 
 const CHAPTERS = [
   {

@@ -1,4 +1,4 @@
-/* 谱线 · 应用主逻辑 */
+/* 数字信号处理 · 应用主逻辑 */
 
 (() => {
   "use strict";
@@ -360,7 +360,7 @@
 
     if (!view) return;
 
-    document.title = `${view.title || "谱线"} · 谱线 DSP 学习台`;
+    document.title = `${view.title || "数字信号处理"} · 数字信号处理学习台`;
     main.innerHTML = view.html;
     hydrateIcons(main);
     renderMathIn(main);
@@ -622,6 +622,23 @@
           <div><h3>复习错题</h3><p>${state.mistakes.length ? `有 ${state.mistakes.length} 道错题等待重做，趁热打铁。` : "做几道题后，错题会自动汇总到这里。"}</p><span class="tag tag-amber">错题本</span></div>
         </a>
       </div>
+
+      <section class="creator-card" aria-labelledby="creator-title">
+        <div class="creator-avatar" aria-hidden="true">EE</div>
+        <div class="creator-main">
+          <span class="eyebrow">ABOUT THE CREATOR</span>
+          <h2 id="creator-title">不止EE</h2>
+          <p>这个学习台由我独立整理、设计和开发。更多数字信号处理内容与更新，欢迎在小红书找到我：<strong>@EE_ELEC_666</strong>。</p>
+          <div class="creator-actions">
+            <a class="btn btn-xhs btn-sm" href="https://www.xiaohongshu.com/search_result/?keyword=EE_ELEC_666" target="_blank" rel="noopener noreferrer">
+              小红书 @EE_ELEC_666 ${icon("external")}
+            </a>
+            <button class="btn btn-ghost btn-sm" type="button" data-copy="EE_ELEC_666" data-copy-label="小红书号" aria-label="复制小红书号 EE_ELEC_666">
+              ${icon("copy")} 复制小红书号
+            </button>
+          </div>
+        </div>
+      </section>
       `,
     };
   }
@@ -1975,7 +1992,7 @@
         try {
           tex = decodeURIComponent(tex);
         } catch (err) {}
-        copyText(tex).then((ok) => toast(ok ? "LaTeX 已复制到剪贴板" : "复制失败，请手动选择", ok ? "ok" : "err"));
+        copyText(tex).then((ok) => toast(ok ? (copyBtn.dataset.copyLabel ? `${copyBtn.dataset.copyLabel}已复制到剪贴板` : "LaTeX 已复制到剪贴板") : "复制失败，请手动选择", ok ? "ok" : "err"));
         return;
       }
       const scrollEl = e.target.closest("[data-scroll]");
