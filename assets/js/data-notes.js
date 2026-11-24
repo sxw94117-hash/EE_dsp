@@ -72,9 +72,9 @@ const NOTES = [
 
 数字信号处理的第一步，是把随时间连续变化的物理量变成一串按顺序排列的数字。这个过程包含三个动作：**采样**（时间离散）、**量化**（幅度离散）和**编码**。本节先只讨论时间离散。
 
-离散时间信号记作 $x[n]$，其中 $n$ 是整数。它不是“连续信号去掉了一些点”，而是一个以整数为自变量的新函数：
+离散时间信号记作 $x(n)$，其中 $n$ 是整数。它不是“连续信号去掉了一些点”，而是一个以整数为自变量的新函数：
 
-$$x[n]=\{1,\ 3,\ 2,\ 0,\ -1\},\qquad n=0,1,2,3,4$$
+$$x(n)=\{1,\ 3,\ 2,\ 0,\ -1\},\qquad n=0,1,2,3,4$$
 
 在 DSP 中，$n$ 通常无量纲，代表第 $n$ 个采样点；真实时间由 $t=nT_s$ 给出，$T_s$ 为采样周期。
 
@@ -82,8 +82,8 @@ $$x[n]=\{1,\ 3,\ 2,\ 0,\ -1\},\qquad n=0,1,2,3,4$$
 
 | 名称 | 定义 | 作用 |
 | --- | --- | --- |
-| 单位脉冲 | $\delta[n]=1\ (n=0)$，其余为 $0$ | 构成任意序列的“积木” |
-| 单位阶跃 | $u[n]=1\ (n\ge 0)$，其余为 $0$ | 描述信号的“开关”时刻 |
+| 单位脉冲 | $\delta(n)=1\ (n=0)$，其余为 $0$ | 构成任意序列的“积木” |
+| 单位阶跃 | $u(n)=1\ (n\ge 0)$，其余为 $0$ | 描述信号的“开关”时刻 |
 | 实指数 | $a^n$ | 刻画增长、衰减与振荡 |
 | 复指数 | $e^{j\omega_0 n}$ | 离散系统的特征函数 |
 
@@ -97,9 +97,9 @@ $\omega_0$ 是数字角频率，单位为 rad/sample。它与模拟频率 $f$ �
 
 连续正弦 $\cos(\Omega t)$ 对任意非零 $\Omega$ 都是周期的。离散正弦则没有这么“幸运”。要让
 
-$$x[n]=\cos(\omega_0 n)$$
+$$x(n)=\cos(\omega_0 n)$$
 
-满足 $x[n+N]=x[n]$，必须有 $\omega_0 N=2\pi k$，于是
+满足 $x(n+N)=x(n)$，必须有 $\omega_0 N=2\pi k$，于是
 
 $$\frac{2\pi}{\omega_0}=\frac{N}{k}\in\mathbb{Q}$$
 
@@ -114,16 +114,16 @@ $$\frac{2\pi}{\omega_0}=\frac{N}{k}\in\mathbb{Q}$$
 
 ## 基本运算
 
-- **移位**：$x[n-n_0]$ 表示右移 $n_0$ 个样本；$x[n+n_0]$ 表示左移。
-- **反转**：$x[-n]$ 以 $n=0$ 为轴翻转。
+- **移位**：$x(n-n_0)$ 表示右移 $n_0$ 个样本；$x(n+n_0)$ 表示左移。
+- **反转**：$x(-n)$ 以 $n=0$ 为轴翻转。
 - **相加、相乘**：逐点进行，要求长度对齐。
-- **累加**：$y[n]=\sum_{k=-\infty}^{n}x[k]$。
-- **抽取**：$y[n]=x[Mn]$，每 $M$ 个点保留一个。
-- **插值**：在样本间补零，$y[n]=x[n/L]$（$n$ 为 $L$ 的整数倍时），其余为 $0$。
+- **累加**：$y(n)=\sum_{k=-\infty}^{n}x(k)$。
+- **抽取**：$y(n)=x(Mn)$，每 $M$ 个点保留一个。
+- **插值**：在样本间补零，$y(n)=x(n/L)$（$n$ 为 $L$ 的整数倍时），其余为 $0$。
 
 任意序列都可以分解为偶部与奇部：
 
-$$x_e[n]=\frac{x[n]+x[-n]}{2},\qquad x_o[n]=\frac{x[n]-x[-n]}{2}$$
+$$x_e(n)=\frac{x(n)+x(-n)}{2},\qquad x_o(n)=\frac{x(n)-x(-n)}{2}$$
 
 ## 一个判断流程
 
@@ -137,44 +137,44 @@ $$x_e[n]=\frac{x[n]+x[-n]}{2},\qquad x_o[n]=\frac{x[n]-x[-n]}{2}$$
     slug: "impulse-step",
     chapter: "basics",
     title: "单位脉冲、阶跃与信号分解",
-    summary: "δ[n] 为什么是离散时间系统里最重要的信号？从筛选性质到任意序列的脉冲分解。",
+    summary: "δ(n) 为什么是离散时间系统里最重要的信号？从筛选性质到任意序列的脉冲分解。",
     minutes: 7,
     level: "基础",
-    tags: ["δ[n]", "分解"],
+    tags: ["δ(n)", "分解"],
     body: String.raw`
 ## 单位脉冲
 
 单位脉冲序列定义为
 
-$$\delta[n]=\begin{cases}1, & n=0\\ 0, & n\ne 0\end{cases}$$
+$$\delta(n)=\begin{cases}1, & n=0\\ 0, & n\ne 0\end{cases}$$
 
 它看起来只是一个孤立的点，却拥有一个极其重要的性质——**筛选性质**：
 
-$$\sum_{n=-\infty}^{\infty}x[n]\delta[n-n_0]=x[n_0]$$
+$$\sum_{n=-\infty}^{\infty}x(n)\delta(n-n_0)=x(n_0)$$
 
 脉冲把序列在 $n_0$ 处的值“挑”了出来。利用这一点，任意序列都可以写成移位脉冲的加权和：
 
-$$x[n]=\sum_{k=-\infty}^{\infty}x[k]\,\delta[n-k]$$
+$$x(n)=\sum_{k=-\infty}^{\infty}x(k)\,\delta(n-k)$$
 
 这条式子是卷积、系统冲激响应和滤波器理论的共同起点。
 
 ## 单位阶跃
 
-$$u[n]=\begin{cases}1, & n\ge 0\\ 0, & n<0\end{cases}$$
+$$u(n)=\begin{cases}1, & n\ge 0\\ 0, & n<0\end{cases}$$
 
 脉冲与阶跃互为差分与累加：
 
-$$\delta[n]=u[n]-u[n-1],\qquad u[n]=\sum_{k=-\infty}^{n}\delta[k]$$
+$$\delta(n)=u(n)-u(n-1),\qquad u(n)=\sum_{k=-\infty}^{n}\delta(k)$$
 
 矩形窗序列可以写成两个阶跃之差：
 
-$$R_N[n]=u[n]-u[n-N]=\begin{cases}1, & 0\le n\le N-1\\ 0, & \text{其他}\end{cases}$$
+$$R_N(n)=u(n)-u(n-N)=\begin{cases}1, & 0\le n\le N-1\\ 0, & \text{其他}\end{cases}$$
 
 ## 用脉冲表示系统
 
-设系统对 $\delta[n]$ 的响应为 $h[n]$。如果系统是线性时不变的，那么对 $x[k]\delta[n-k]$ 的响应就是 $x[k]h[n-k]$，把所有 $k$ 叠加：
+设系统对 $\delta(n)$ 的响应为 $h(n)$。如果系统是线性时不变的，那么对 $x(k)\delta(n-k)$ 的响应就是 $x(k)h(n-k)$，把所有 $k$ 叠加：
 
-$$y[n]=\sum_{k=-\infty}^{\infty}x[k]\,h[n-k]$$
+$$y(n)=\sum_{k=-\infty}^{\infty}x(k)\,h(n-k)$$
 
 这就是卷积。换句话说，**只要知道系统对单位脉冲的响应，就知道了系统对任意输入的响应**。
 
@@ -182,9 +182,9 @@ $$y[n]=\sum_{k=-\infty}^{\infty}x[k]\,h[n-k]$$
 
 任何实序列都能唯一分解为偶对称部分与奇对称部分：
 
-$$x_e[n]=\frac{x[n]+x[-n]}{2},\qquad x_o[n]=\frac{x[n]-x[-n]}{2}$$
+$$x_e(n)=\frac{x(n)+x(-n)}{2},\qquad x_o(n)=\frac{x(n)-x(-n)}{2}$$
 
-$$x[n]=x_e[n]+x_o[n]$$
+$$x(n)=x_e(n)+x_o(n)$$
 
 偶部的 DTFT 是实函数，奇部的 DTFT 是纯虚函数；这一性质常用于分析实信号的频谱对称性。
 
@@ -193,7 +193,7 @@ $$x[n]=x_e[n]+x_o[n]$$
 
 ## 小练习
 
-设 $x[n]=2\delta[n]+3\delta[n-1]-\delta[n-3]$，则 $x[0]=2$、$x[1]=3$、$x[3]=-1$，其余为 $0$。若系统冲激响应为 $h[n]=\delta[n]+\delta[n-1]$，不经过卷积公式也能直接看出 $y[n]=x[n]+x[n-1]$。
+设 $x(n)=2\delta(n)+3\delta(n-1)-\delta(n-3)$，则 $x(0)=2$、$x(1)=3$、$x(3)=-1$，其余为 $0$。若系统冲激响应为 $h(n)=\delta(n)+\delta(n-1)$，不经过卷积公式也能直接看出 $y(n)=x(n)+x(n-1)$。
 `,
   },
   {
@@ -209,16 +209,16 @@ $$x[n]=x_e[n]+x_o[n]$$
 
 离散卷积定义为
 
-$$y[n]=x[n]*h[n]=\sum_{k=-\infty}^{\infty}x[k]\,h[n-k]$$
+$$y(n)=x(n)*h(n)=\sum_{k=-\infty}^{\infty}x(k)\,h(n-k)$$
 
 它描述的是：输入 $x$ 的每一个样本，都激发一个按 $h$ 形状延展的响应，所有响应叠加成输出 $y$。
 
 ## 图解法的四个动作
 
-1. **翻转**：把 $h[k]$ 关于纵轴翻转为 $h[-k]$。
-2. **移位**：右移 $n$ 得到 $h[n-k]$。
-3. **相乘**：逐点计算 $x[k]h[n-k]$。
-4. **求和**：把所有乘积相加，得到 $y[n]$。
+1. **翻转**：把 $h(k)$ 关于纵轴翻转为 $h(-k)$。
+2. **移位**：右移 $n$ 得到 $h(n-k)$。
+3. **相乘**：逐点计算 $x(k)h(n-k)$。
+4. **求和**：把所有乘积相加，得到 $y(n)$。
 
 对每个 $n$ 重复上述过程，就得到完整输出。两个长度分别为 $L$ 和 $M$ 的有限长序列卷积后，长度为
 
@@ -231,33 +231,33 @@ $$L_y=L+M-1$$
 | 交换律 | $x*h=h*x$ |
 | 结合律 | $(x*h_1)*h_2=x*(h_1*h_2)$ |
 | 分配律 | $x*(h_1+h_2)=x*h_1+x*h_2$ |
-| 与脉冲 | $x[n]*\delta[n-n_0]=x[n-n_0]$ |
+| 与脉冲 | $x(n)*\delta(n-n_0)=x(n-n_0)$ |
 
 结合律对应**级联系统**：两个系统串联，总冲激响应是二者卷积。分配律对应**并联系统**：总响应是二者之和。交换律则说明级联顺序可以互换。
 
 ## 因果性与稳定性
 
-- **因果**：系统当前输出不依赖未来输入，等价于 $h[n]=0,\ n<0$。
+- **因果**：系统当前输出不依赖未来输入，等价于 $h(n)=0,\ n<0$。
 - **BIBO 稳定**：有界输入产生有界输出，等价于
 
-$$\sum_{n=-\infty}^{\infty}|h[n]|<\infty$$
+$$\sum_{n=-\infty}^{\infty}|h(n)|<\infty$$
 
-例如 $h[n]=0.5^n u[n]$ 绝对可和，系统稳定；$h[n]=2^n u[n]$ 不可和，系统不稳定。
+例如 $h(n)=0.5^n u(n)$ 绝对可和，系统稳定；$h(n)=2^n u(n)$ 不可和，系统不稳定。
 
 ## 例题
 
-设 $x[n]=\{1,2,3\}$（$n=0,1,2$），$h[n]=\{1,-1\}$（$n=0,1$），则
+设 $x(n)=\{1,2,3\}$（$n=0,1,2$），$h(n)=\{1,-1\}$（$n=0,1$），则
 
-$$y[0]=1,\quad y[1]=2-1=1,\quad y[2]=3-2=1,\quad y[3]=-3$$
+$$y(0)=1,\quad y(1)=2-1=1,\quad y(2)=3-2=1,\quad y(3)=-3$$
 
-所以 $y[n]=\{1,1,1,-3\}$，长度 $3+2-1=4$，与预期一致。
+所以 $y(n)=\{1,1,1,-3\}$，长度 $3+2-1=4$，与预期一致。
 
 > [!tip] 做题技巧
 > 有限长序列卷积可以用“竖式乘法”快速计算：把两个序列当作多项式系数相乘，结果的系数就是卷积。符号问题用翻转图解法核对。
 
 ## 卷积与滤波
 
-卷积就是滤波。$h[n]$ 是滑动平均，输出就被平滑；$h[n]$ 是差分算子，输出就突出变化；$h[n]$ 是正弦，输出就提取对应频率分量。后面设计 FIR 滤波器，本质上就是在设计一个合适的 $h[n]$。
+卷积就是滤波。$h(n)$ 是滑动平均，输出就被平滑；$h(n)$ 是差分算子，输出就突出变化；$h(n)$ 是正弦，输出就提取对应频率分量。后面设计 FIR 滤波器，本质上就是在设计一个合适的 $h(n)$。
 `,
   },
   {
@@ -273,25 +273,25 @@ $$y[0]=1,\quad y[1]=2-1=1,\quad y[2]=3-2=1,\quad y[3]=-3$$
 
 一个线性常系数差分方程可以写成
 
-$$\sum_{k=0}^{N}a_k\,y[n-k]=\sum_{m=0}^{M}b_m\,x[n-m]$$
+$$\sum_{k=0}^{N}a_k\,y(n-k)=\sum_{m=0}^{M}b_m\,x(n-m)$$
 
 通常令 $a_0=1$，解出当前输出：
 
-$$y[n]=-\sum_{k=1}^{N}a_k y[n-k]+\sum_{m=0}^{M}b_m x[n-m]$$
+$$y(n)=-\sum_{k=1}^{N}a_k y(n-k)+\sum_{m=0}^{M}b_m x(n-m)$$
 
-等式右边含有过去的输出 $y[n-k]$ 时，称为**递归型**；只含输入时，称为**非递归型**。
+等式右边含有过去的输出 $y(n-k)$ 时，称为**递归型**；只含输入时，称为**非递归型**。
 
 ## 从差分方程到冲激响应
 
-令输入为 $\delta[n]$、初始状态为零，递推得到的输出就是 $h[n]$。例如
+令输入为 $\delta(n)$、初始状态为零，递推得到的输出就是 $h(n)$。例如
 
-$$y[n]=0.5y[n-1]+x[n]$$
+$$y(n)=0.5y(n-1)+x(n)$$
 
-当 $x[n]=\delta[n]$ 时，$y[0]=1$，$y[1]=0.5$，$y[2]=0.25$，于是
+当 $x(n)=\delta(n)$ 时，$y(0)=1$，$y(1)=0.5$，$y(2)=0.25$，于是
 
-$$h[n]=0.5^n u[n]$$
+$$h(n)=0.5^n u(n)$$
 
-这是一个无限长冲激响应（IIR）系统。若方程只含输入项，例如 $y[n]=x[n]+x[n-1]$，则 $h[n]=\{1,1\}$，是有限长冲激响应（FIR）。
+这是一个无限长冲激响应（IIR）系统。若方程只含输入项，例如 $y(n)=x(n)+x(n-1)$，则 $h(n)=\{1,1\}$，是有限长冲激响应（FIR）。
 
 ## 五大系统性质
 
@@ -299,15 +299,15 @@ $$h[n]=0.5^n u[n]$$
 | --- | --- |
 | 线性 | 同时满足可加性与齐次性 |
 | 时不变 | 输入移位，输出同样移位 |
-| 因果 | $h[n]=0\ (n<0)$，或输出不依赖未来输入 |
-| 稳定 | $\sum|h[n]|<\infty$ |
+| 因果 | $h(n)=0\ (n<0)$，或输出不依赖未来输入 |
+| 稳定 | $\sum|h(n)|<\infty$ |
 | 无记忆 | 输出只与当前输入有关 |
 
-判断时不要只看方程“长得像不像”。例如 $y[n]=x[n]x[n-1]$ 不含递归，但是非线性的；$y[n]=x[n]+x[n+1]$ 是线性的，但非因果。
+判断时不要只看方程“长得像不像”。例如 $y(n)=x(n)x(n-1)$ 不含递归，但是非线性的；$y(n)=x(n)+x(n+1)$ 是线性的，但非因果。
 
 ## 系统函数预告
 
-对差分方程两边做 z 变换，利用时移性质 $y[n-k]\leftrightarrow z^{-k}Y(z)$，得到
+对差分方程两边做 z 变换，利用时移性质 $y(n-k)\leftrightarrow z^{-k}Y(z)$，得到
 
 $$H(z)=\frac{Y(z)}{X(z)}=\frac{\sum_{m=0}^{M}b_m z^{-m}}{\sum_{k=0}^{N}a_k z^{-k}}$$
 
@@ -334,26 +334,26 @@ $$H(z)=\frac{Y(z)}{X(z)}=\frac{\sum_{m=0}^{M}b_m z^{-m}}{\sum_{k=0}^{N}a_k z^{-k
 
 互相关衡量两个序列在不同时移下的相似程度：
 
-$$r_{xy}[l]=\sum_{n=-\infty}^{\infty}x[n]\,y[n-l]$$
+$$r_{xy}(l)=\sum_{n=-\infty}^{\infty}x(n)\,y(n-l)$$
 
 当 $l$ 使两个波形对齐时，乘积求和达到峰值。因此互相关常用于**时延估计**：发射信号与接收信号做互相关，峰值位置就是传播时延。
 
 归一化互相关可以消除幅度影响：
 
-$$\rho_{xy}[l]=\frac{r_{xy}[l]}{\sqrt{E_xE_y}}$$
+$$\rho_{xy}(l)=\frac{r_{xy}(l)}{\sqrt{E_xE_y}}$$
 
-其中 $E_x=\sum|x[n]|^2$，$E_y=\sum|y[n]|^2$。
+其中 $E_x=\sum|x(n)|^2$，$E_y=\sum|y(n)|^2$。
 
 ## 自相关
 
 令 $y=x$，得到自相关：
 
-$$r_{xx}[l]=\sum_{n}x[n]x[n-l]$$
+$$r_{xx}(l)=\sum_{n}x(n)x(n-l)$$
 
 它具有两条重要性质：
 
-- **偶对称**：$r_{xx}[-l]=r_{xx}[l]$（实序列）。
-- **零延迟最大**：$|r_{xx}[l]|\le r_{xx}[0]=E_x$。
+- **偶对称**：$r_{xx}(-l)=r_{xx}(l)$（实序列）。
+- **零延迟最大**：$|r_{xx}(l)|\le r_{xx}(0)=E_x$。
 
 周期信号的自相关仍然是周期的，因此可以从自相关峰值的间隔读出基频周期。这就是**基音检测**的基本思路。
 
@@ -363,15 +363,15 @@ $$r_{xx}[l]=\sum_{n}x[n]x[n-l]$$
 | --- | --- | --- |
 | 能量信号 | $0<E<\infty$，$P=0$ | 有限长脉冲、衰减指数 |
 | 功率信号 | $E=\infty$，$0<P<\infty$ | 周期信号、持续正弦 |
-| 非能量非功率 | 两者都无穷 | $n u[n]$ |
+| 非能量非功率 | 两者都无穷 | $n u(n)$ |
 
-$$E=\sum_{n=-\infty}^{\infty}|x[n]|^2,\qquad P=\lim_{N\to\infty}\frac{1}{2N+1}\sum_{n=-N}^{N}|x[n]|^2$$
+$$E=\sum_{n=-\infty}^{\infty}|x(n)|^2,\qquad P=\lim_{N\to\infty}\frac{1}{2N+1}\sum_{n=-N}^{N}|x(n)|^2$$
 
 ## Parseval 关系
 
 能量可以在时域或频域计算：
 
-$$\sum_{n=-\infty}^{\infty}|x[n]|^2=\frac{1}{2\pi}\int_{-\pi}^{\pi}\left|X(e^{j\omega})\right|^2d\omega$$
+$$\sum_{n=-\infty}^{\infty}|x(n)|^2=\frac{1}{2\pi}\int_{-\pi}^{\pi}\left|X(e^{j\omega})\right|^2d\omega$$
 
 $|X(e^{j\omega})|^2$ 称为**能量谱密度**。对功率信号，对应的是功率谱密度。Parseval 告诉我们：变换不创造也不消灭能量，只是换了一个观察角度。
 
@@ -496,7 +496,7 @@ $$f_s-B>B\quad\Rightarrow\quad f_s>2B$$
 
 设 $x(t)=\cos(2\pi\cdot7t)$，采样率 $f_s=10$ Hz。采样点为
 
-$$x[n]=\cos\!\left(2\pi\cdot\frac{7}{10}n\right)$$
+$$x(n)=\cos\!\left(2\pi\cdot\frac{7}{10}n\right)$$
 
 而 $\cos(2\pi\cdot0.7n)=\cos(2\pi n-2\pi\cdot0.3n)=\cos(2\pi\cdot0.3n)$。也就是说，采样后的序列与 $3$ Hz 正弦完全相同。观察者只看到样本，无法判断它原本是 $7$ Hz 还是 $3$ Hz。
 
@@ -580,7 +580,7 @@ $$f_{\text{alias}}=|f-kf_s|,\qquad k=\operatorname{round}\!\left(\frac{f}{f_s}\r
 
 采样定理成立时，原信号可以由样本与 sinc 函数卷积精确恢复：
 
-$$x(t)=\sum_{n=-\infty}^{\infty}x[n]\,\operatorname{sinc}\!\left(\frac{t-nT_s}{T_s}\right)$$
+$$x(t)=\sum_{n=-\infty}^{\infty}x(n)\,\operatorname{sinc}\!\left(\frac{t-nT_s}{T_s}\right)$$
 
 其中 $\operatorname{sinc}(u)=\dfrac{\sin(\pi u)}{\pi u}$。每个样本都激发一个以自己为中心的 sinc 波，所有 sinc 叠加成原信号。
 
@@ -640,7 +640,7 @@ $$\Delta=\frac{V_{\text{FSR}}}{2^b}$$
 
 舍入量化时，误差落在半个间隔内：
 
-$$e[n]=x_q[n]-x[n]\in\left[-\frac{\Delta}{2},\ \frac{\Delta}{2}\right]$$
+$$e(n)=x_q(n)-x(n)\in\left[-\frac{\Delta}{2},\ \frac{\Delta}{2}\right]$$
 
 假设误差在区间内均匀分布且与信号不相关，其方差为
 
@@ -766,7 +766,7 @@ $$P_e\propto\frac{\pi^{2}}{3}\cdot\frac{1}{OSR^{3}}$$
 
 z 变换把离散序列映射为复变量 $z$ 的函数：
 
-$$X(z)=\sum_{n=-\infty}^{\infty}x[n]\,z^{-n}$$
+$$X(z)=\sum_{n=-\infty}^{\infty}x(n)\,z^{-n}$$
 
 令 $z=re^{j\omega}$，则 $z^{-n}=r^{-n}e^{-j\omega n}$。可以看到，z 变换在单位圆 $r=1$ 上退化为 DTFT：
 
@@ -776,7 +776,7 @@ $$X(e^{j\omega})=\left.X(z)\right|_{z=e^{j\omega}}$$
 
 上面的无穷级数并不总是收敛。使级数绝对收敛的 $z$ 的集合称为**收敛域**（Region of Convergence）：
 
-$$ROC=\left\{z:\sum_{n=-\infty}^{\infty}\left|x[n]z^{-n}\right|<\infty\right\}$$
+$$ROC=\left\{z:\sum_{n=-\infty}^{\infty}\left|x(n)z^{-n}\right|<\infty\right\}$$
 
 ROC 的性质：
 
@@ -789,11 +789,11 @@ ROC 的性质：
 
 ## 一个例子
 
-$$x[n]=a^n u[n]$$
+$$x(n)=a^n u(n)$$
 
 $$X(z)=\sum_{n=0}^{\infty}(az^{-1})^n=\frac{1}{1-az^{-1}}=\frac{z}{z-a},\qquad |z|>|a|$$
 
-极点位于 $z=a$，ROC 是半径为 $|a|$ 的圆外区域。只有加上 ROC，才能唯一确定这个 z 变换对应的是右边序列 $a^nu[n]$，而不是左边序列 $-a^nu[-n-1]$。二者代数表达式相同，ROC 不同。
+极点位于 $z=a$，ROC 是半径为 $|a|$ 的圆外区域。只有加上 ROC，才能唯一确定这个 z 变换对应的是右边序列 $a^nu(n)$，而不是左边序列 $-a^nu(-n-1)$。二者代数表达式相同，ROC 不同。
 
 ## 与 DTFT、DFT 的关系
 
@@ -829,25 +829,25 @@ $$X(z)=\sum_{n=0}^{\infty}(az^{-1})^n=\frac{1}{1-az^{-1}}=\frac{z}{z-a},\qquad |
     body: String.raw`
 ## 基本变换对
 
-| 序列 $x[n]$ | z 变换 $X(z)$ | 收敛域 |
+| 序列 $x(n)$ | z 变换 $X(z)$ | 收敛域 |
 | --- | --- | --- |
-| $\delta[n]$ | $1$ | 全平面 |
-| $\delta[n-n_0]$ | $z^{-n_0}$ | 全平面（$z\ne0$ 当 $n_0>0$） |
-| $u[n]$ | $\dfrac{1}{1-z^{-1}}$ | $\lvert z\rvert>1$ |
-| $a^n u[n]$ | $\dfrac{1}{1-az^{-1}}$ | $\lvert z\rvert>\lvert a\rvert$ |
-| $-a^n u[-n-1]$ | $\dfrac{1}{1-az^{-1}}$ | $\lvert z\rvert<\lvert a\rvert$ |
-| $n a^n u[n]$ | $\dfrac{az^{-1}}{(1-az^{-1})^2}$ | $\lvert z\rvert>\lvert a\rvert$ |
-| $n\,u[n]$ | $\dfrac{z^{-1}}{(1-z^{-1})^2}$ | $\lvert z\rvert>1$ |
+| $\delta(n)$ | $1$ | 全平面 |
+| $\delta(n-n_0)$ | $z^{-n_0}$ | 全平面（$z\ne0$ 当 $n_0>0$） |
+| $u(n)$ | $\dfrac{1}{1-z^{-1}}$ | $\lvert z\rvert>1$ |
+| $a^n u(n)$ | $\dfrac{1}{1-az^{-1}}$ | $\lvert z\rvert>\lvert a\rvert$ |
+| $-a^n u(-n-1)$ | $\dfrac{1}{1-az^{-1}}$ | $\lvert z\rvert<\lvert a\rvert$ |
+| $n a^n u(n)$ | $\dfrac{az^{-1}}{(1-az^{-1})^2}$ | $\lvert z\rvert>\lvert a\rvert$ |
+| $n\,u(n)$ | $\dfrac{z^{-1}}{(1-z^{-1})^2}$ | $\lvert z\rvert>1$ |
 
 注意第 4、5 行：代数表达式完全相同，但 ROC 不同，对应的时间序列方向相反。这正是 z 变换必须带 ROC 的原因。
 
 ## 正余弦序列
 
-$$\cos(\omega_0 n)u[n]\ \longleftrightarrow\ \frac{1-\cos\omega_0\,z^{-1}}{1-2\cos\omega_0\,z^{-1}+z^{-2}},\qquad |z|>1$$
+$$\cos(\omega_0 n)u(n)\ \longleftrightarrow\ \frac{1-\cos\omega_0\,z^{-1}}{1-2\cos\omega_0\,z^{-1}+z^{-2}},\qquad |z|>1$$
 
-$$\sin(\omega_0 n)u[n]\ \longleftrightarrow\ \frac{\sin\omega_0\,z^{-1}}{1-2\cos\omega_0\,z^{-1}+z^{-2}},\qquad |z|>1$$
+$$\sin(\omega_0 n)u(n)\ \longleftrightarrow\ \frac{\sin\omega_0\,z^{-1}}{1-2\cos\omega_0\,z^{-1}+z^{-2}},\qquad |z|>1$$
 
-$$r^n\cos(\omega_0 n)u[n]\ \longleftrightarrow\ \frac{1-r\cos\omega_0\,z^{-1}}{1-2r\cos\omega_0\,z^{-1}+r^2z^{-2}},\qquad |z|>r$$
+$$r^n\cos(\omega_0 n)u(n)\ \longleftrightarrow\ \frac{1-r\cos\omega_0\,z^{-1}}{1-2r\cos\omega_0\,z^{-1}+r^2z^{-2}},\qquad |z|>r$$
 
 衰减正弦的极点位于 $z=re^{\pm j\omega_0}$，半径 $r$ 决定衰减速度，角度 $\omega_0$ 决定振荡频率。这是二阶系统与谐振器设计的核心。
 
@@ -856,14 +856,14 @@ $$r^n\cos(\omega_0 n)u[n]\ \longleftrightarrow\ \frac{1-r\cos\omega_0\,z^{-1}}{1
 | 性质 | 时域 | z 域 |
 | --- | --- | --- |
 | 线性 | $ax_1+bx_2$ | $aX_1+bX_2$ |
-| 时移 | $x[n-n_0]$ | $z^{-n_0}X(z)$ |
-| z 域缩放 | $a^nx[n]$ | $X(z/a)$ |
-| 卷积 | $x[n]*h[n]$ | $X(z)H(z)$ |
-| 累加 | $\sum_{k=-\infty}^{n}x[k]$ | $\dfrac{X(z)}{1-z^{-1}}$ |
-| 反转 | $x[-n]$ | $X(1/z)$ |
+| 时移 | $x(n-n_0)$ | $z^{-n_0}X(z)$ |
+| z 域缩放 | $a^nx(n)$ | $X(z/a)$ |
+| 卷积 | $x(n)*h(n)$ | $X(z)H(z)$ |
+| 累加 | $\sum_{k=-\infty}^{n}x(k)$ | $\dfrac{X(z)}{1-z^{-1}}$ |
+| 反转 | $x(-n)$ | $X(1/z)$ |
 
 > [!tip] 记忆方法
-> 把 $z^{-1}$ 看作“延迟一个样本”的算子。差分方程里的 $y[n-1]$ 对应 $z^{-1}Y(z)$，这样系统函数可以直接从方程读出。
+> 把 $z^{-1}$ 看作“延迟一个样本”的算子。差分方程里的 $y(n-1)$ 对应 $z^{-1}Y(z)$，这样系统函数可以直接从方程读出。
 
 ## 使用建议
 
@@ -881,55 +881,55 @@ $$r^n\cos(\omega_0 n)u[n]\ \longleftrightarrow\ \frac{1-r\cos\omega_0\,z^{-1}}{1
     body: String.raw`
 ## 线性
 
-$$ax_1[n]+bx_2[n]\ \longleftrightarrow\ aX_1(z)+bX_2(z)$$
+$$ax_1(n)+bx_2(n)\ \longleftrightarrow\ aX_1(z)+bX_2(z)$$
 
 ROC 至少是 $ROC_1\cap ROC_2$，若发生零极点相消，可能扩大。
 
 ## 时移
 
-$$x[n-n_0]\ \longleftrightarrow\ z^{-n_0}X(z)$$
+$$x(n-n_0)\ \longleftrightarrow\ z^{-n_0}X(z)$$
 
 ROC 不变（可能增加或去掉 $z=0$、$z=\infty$）。这条性质把差分方程变成了代数方程。
 
 ## z 域尺度变换
 
-$$a^n x[n]\ \longleftrightarrow\ X\!\left(\frac{z}{a}\right)$$
+$$a^n x(n)\ \longleftrightarrow\ X\!\left(\frac{z}{a}\right)$$
 
 ROC 变为 $|a|\,ROC$。若 $a$ 是复数，则 ROC 发生旋转与缩放。极点位置乘以 $a$，这解释了为什么极点半径决定衰减、角度决定频率。
 
 ## z 域微分
 
-$$n\,x[n]\ \longleftrightarrow\ -z\frac{dX(z)}{dz}$$
+$$n\,x(n)\ \longleftrightarrow\ -z\frac{dX(z)}{dz}$$
 
-用于求 $n a^n u[n]$ 这类序列的变换。
+用于求 $n a^n u(n)$ 这类序列的变换。
 
 ## 卷积定理
 
-$$x[n]*h[n]\ \longleftrightarrow\ X(z)H(z)$$
+$$x(n)*h(n)\ \longleftrightarrow\ X(z)H(z)$$
 
 这是 z 变换最有用的性质：时域卷积变成 z 域相乘。系统级联对应系统函数相乘，频率响应也相乘。
 
 ## 累加
 
-$$\sum_{k=-\infty}^{n}x[k]\ \longleftrightarrow\ \frac{X(z)}{1-z^{-1}}$$
+$$\sum_{k=-\infty}^{n}x(k)\ \longleftrightarrow\ \frac{X(z)}{1-z^{-1}}$$
 
 累加器在 $z=1$ 处引入一个极点，对应直流无穷增益。这就是数字积分器。
 
 ## 反转与共轭
 
-$$x[-n]\ \longleftrightarrow\ X(1/z),\qquad x^*[n]\ \longleftrightarrow\ X^*(z^*)$$
+$$x(-n)\ \longleftrightarrow\ X(1/z),\qquad x^*(n)\ \longleftrightarrow\ X^*(z^*)$$
 
-反转会把 ROC 取倒数。若 $x[n]$ 是实序列，则 $X(z)$ 的零极点关于实轴对称。
+反转会把 ROC 取倒数。若 $x(n)$ 是实序列，则 $X(z)$ 的零极点关于实轴对称。
 
 ## 初值与终值定理
 
 对因果序列：
 
-$$x[0]=\lim_{z\to\infty}X(z)$$
+$$x(0)=\lim_{z\to\infty}X(z)$$
 
 若 $(z-1)X(z)$ 的极点都在单位圆内，则
 
-$$x[\infty]=\lim_{z\to1}(z-1)X(z)$$
+$$x(\infty)=\lim_{z\to1}(z-1)X(z)$$
 
 终值定理常用于判断系统阶跃响应是否收敛到稳态。
 
@@ -938,11 +938,11 @@ $$x[\infty]=\lim_{z\to1}(z-1)X(z)$$
 
 ## 一个小例子
 
-已知 $x[n]=u[n]$，求 $y[n]=x[n]-x[n-1]$ 的 z 变换：
+已知 $x(n)=u(n)$，求 $y(n)=x(n)-x(n-1)$ 的 z 变换：
 
 $$Y(z)=\left(1-z^{-1}\right)\frac{1}{1-z^{-1}}=1$$
 
-结果对应 $\delta[n]$，与 $u[n]-u[n-1]=\delta[n]$ 一致。零极点相消让 ROC 扩大到全平面。
+结果对应 $\delta(n)$，与 $u(n)-u(n-1)=\delta(n)$ 一致。零极点相消让 ROC 扩大到全平面。
 `,
   },
   {
@@ -971,7 +971,7 @@ $$X(z)=\frac{B(z)}{A(z)}=\frac{b_0+b_1z^{-1}+\cdots}{1+a_1z^{-1}+\cdots}$$
 2. 把分母因式分解，写成 $\prod(1-p_iz^{-1})$。
 3. 展开为 $\dfrac{A_i}{1-p_iz^{-1}}$ 之和。
 4. 根据 ROC 判断每一项是右边还是左边序列。
-5. 查表写出 $x[n]$。
+5. 查表写出 $x(n)$。
 
 ## 例题
 
@@ -993,19 +993,19 @@ $$X(z)=\frac{2}{1-0.5z^{-1}}-\frac{1}{1-0.25z^{-1}}$$
 
 ROC 为 $|z|>0.5$，两个极点都在 ROC 内部，对应右边序列：
 
-$$x[n]=\left(2\cdot0.5^n-0.25^n\right)u[n]$$
+$$x(n)=\left(2\cdot0.5^n-0.25^n\right)u(n)$$
 
 ## ROC 如何决定方向
 
 | 项的 ROC | 对应序列 |
 | --- | --- |
-| $\lvert z\rvert>\lvert p\rvert$ | $p^n u[n]$（右边） |
-| $\lvert z\rvert<\lvert p\rvert$ | $-p^n u[-n-1]$（左边） |
+| $\lvert z\rvert>\lvert p\rvert$ | $p^n u(n)$（右边） |
+| $\lvert z\rvert<\lvert p\rvert$ | $-p^n u(-n-1)$（左边） |
 | 环形区域 | 双边序列，两部分分别展开 |
 
 若上例的 ROC 改为 $0.25<|z|<0.5$，则极点 $0.5$ 在 ROC 外、$0.25$ 在 ROC 内：
 
-$$x[n]=-2\cdot0.5^n u[-n-1]-0.25^n u[n]$$
+$$x(n)=-2\cdot0.5^n u(-n-1)-0.25^n u(n)$$
 
 同一个 $X(z)$，不同 ROC，得到完全不同的时间序列。
 
@@ -1018,7 +1018,7 @@ $$x[n]=-2\cdot0.5^n u[-n-1]-0.25^n u[n]$$
 
 $$\frac{A}{1-pz^{-1}}+\frac{B}{(1-pz^{-1})^2}$$
 
-后者对应 $B(n+1)p^n u[n]$。三阶及以上同理，逐阶求导或比较系数即可。
+后者对应 $B(n+1)p^n u(n)$。三阶及以上同理，逐阶求导或比较系数即可。
 `,
   },
   {
@@ -1134,11 +1134,11 @@ $r$ 决定品质因数，$\omega_0$ 决定中心频率。
 
 离散时间傅里叶变换（DTFT）定义为
 
-$$X(e^{j\omega})=\sum_{n=-\infty}^{\infty}x[n]\,e^{-j\omega n}$$
+$$X(e^{j\omega})=\sum_{n=-\infty}^{\infty}x(n)\,e^{-j\omega n}$$
 
 它是 $z$ 变换在单位圆 $z=e^{j\omega}$ 上的取值。逆变换为
 
-$$x[n]=\frac{1}{2\pi}\int_{-\pi}^{\pi}X(e^{j\omega})\,e^{j\omega n}\,d\omega$$
+$$x(n)=\frac{1}{2\pi}\int_{-\pi}^{\pi}X(e^{j\omega})\,e^{j\omega n}\,d\omega$$
 
 ## 最重要的性质：周期性
 
@@ -1152,18 +1152,18 @@ $$X(e^{j(\omega+2\pi)})=X(e^{j\omega})$$
 
 | 序列 | DTFT |
 | --- | --- |
-| $\delta[n]$ | $1$ |
-| $\delta[n-n_0]$ | $e^{-j\omega n_0}$ |
+| $\delta(n)$ | $1$ |
+| $\delta(n-n_0)$ | $e^{-j\omega n_0}$ |
 | $1,\ -\infty<n<\infty$ | $2\pi\sum_k\delta(\omega-2\pi k)$ |
-| $a^nu[n],\ \lvert a\rvert<1$ | $\dfrac{1}{1-ae^{-j\omega}}$ |
-| 矩形窗 $R_N[n]$ | $e^{-j\omega(N-1)/2}\dfrac{\sin(\omega N/2)}{\sin(\omega/2)}$ |
+| $a^nu(n),\ \lvert a\rvert<1$ | $\dfrac{1}{1-ae^{-j\omega}}$ |
+| 矩形窗 $R_N(n)$ | $e^{-j\omega(N-1)/2}\dfrac{\sin(\omega N/2)}{\sin(\omega/2)}$ |
 | $\cos(\omega_0n)$ | $\pi\sum_k\left[\delta(\omega-\omega_0-2\pi k)+\delta(\omega+\omega_0-2\pi k)\right]$ |
 
 矩形窗的 DTFT 称为 Dirichlet 核，其形状决定了有限长观测带来的频谱泄漏。
 
 ## 对称性
 
-对实序列 $x[n]$：
+对实序列 $x(n)$：
 
 $$X(e^{j\omega})=X^*(e^{-j\omega})$$
 
@@ -1175,7 +1175,7 @@ $$\left|X(e^{j\omega})\right|=\left|X(e^{-j\omega})\right|,\qquad \angle X(e^{j\
 
 ## 收敛条件
 
-若 $x[n]$ 绝对可和，即 $\sum|x[n]|<\infty$，则 DTFT 一致收敛。对于能量有限但非绝对可和的序列（如理想低通冲激响应），DTFT 在均方意义下收敛，频谱中可能出现不连续点。
+若 $x(n)$ 绝对可和，即 $\sum|x(n)|<\infty$，则 DTFT 一致收敛。对于能量有限但非绝对可和的序列（如理想低通冲激响应），DTFT 在均方意义下收敛，频谱中可能出现不连续点。
 
 周期信号与常数序列不满足绝对可和，需要引入冲激函数，在广义函数意义下讨论。
 
@@ -1207,7 +1207,7 @@ DFT 是对 DTFT 在 $[0,2\pi)$ 上等间隔采样 $N$ 个点。采样点越密�
 
 对长度为 $N$ 的有限长序列，DFT 定义为
 
-$$X[k]=\sum_{n=0}^{N-1}x[n]\,W_N^{nk},\qquad k=0,1,\dots,N-1$$
+$$X(k)=\sum_{n=0}^{N-1}x(n)\,W_N^{nk},\qquad k=0,1,\dots,N-1$$
 
 其中旋转因子
 
@@ -1215,7 +1215,7 @@ $$W_N=e^{-j2\pi/N}$$
 
 逆变换为
 
-$$x[n]=\frac{1}{N}\sum_{k=0}^{N-1}X[k]\,W_N^{-nk}$$
+$$x(n)=\frac{1}{N}\sum_{k=0}^{N-1}X(k)\,W_N^{-nk}$$
 
 DFT 把 $N$ 个时域样本映射为 $N$ 个频域复数，信息量不变，是可逆变换。
 
@@ -1233,24 +1233,24 @@ $$f_k=k\frac{f_s}{N},\qquad k=0,1,\dots,N-1$$
 
 ## 手算 4 点 DFT
 
-设 $x[n]=\{1,1,0,0\}$，$N=4$。旋转因子 $W_4^0=1$，$W_4^1=-j$，$W_4^2=-1$，$W_4^3=j$。
+设 $x(n)=\{1,1,0,0\}$，$N=4$。旋转因子 $W_4^0=1$，$W_4^1=-j$，$W_4^2=-1$，$W_4^3=j$。
 
-- $X[0]=1+1=2$
-- $X[1]=1+1\cdot(-j)=1-j$
-- $X[2]=1+1\cdot(-1)=0$
-- $X[3]=1+1\cdot(j)=1+j$
+- $X(0)=1+1=2$
+- $X(1)=1+1\cdot(-j)=1-j$
+- $X(2)=1+1\cdot(-1)=0$
+- $X(3)=1+1\cdot(j)=1+j$
 
-所以 $X=\{2,\ 1-j,\ 0,\ 1+j\}$。可以看到 $X[3]=X^*[1]$，符合实序列的共轭对称性。
+所以 $X=\{2,\ 1-j,\ 0,\ 1+j\}$。可以看到 $X(3)=X^*(1)$，符合实序列的共轭对称性。
 
 ## 幅度与相位
 
 DFT 输出是复数：
 
-$$X[k]=|X[k]|\,e^{j\angle X[k]}$$
+$$X(k)=|X(k)|\,e^{j\angle X(k)}$$
 
 幅度谱告诉我们各频率分量的强弱，相位谱告诉我们相对时间关系。工程上常画
 
-$$20\log_{10}|X[k]|\quad\text{(dB)}$$
+$$20\log_{10}|X(k)|\quad\text{(dB)}$$
 
 以获得更大的动态范围。注意 DFT 的幅度与 $N$ 有关：单频正弦的峰值约为 $N/2$（未归一化），所以画图时常除以 $N$ 或 $N/2$。
 
@@ -1262,7 +1262,7 @@ $$20\log_{10}|X[k]|\quad\text{(dB)}$$
 
 DFT 是 DTFT 在 $N$ 个等间隔频点上的采样：
 
-$$X[k]=\left.X(e^{j\omega})\right|_{\omega=2\pi k/N}$$
+$$X(k)=\left.X(e^{j\omega})\right|_{\omega=2\pi k/N}$$
 
 也可以理解为：把有限长序列以 $N$ 为周期延拓后求离散傅里叶级数。这个“周期延拓”视角是理解循环卷积与频谱泄漏的关键。
 
@@ -1281,11 +1281,11 @@ $$X[k]=\left.X(e^{j\omega})\right|_{\omega=2\pi k/N}$$
     body: String.raw`
 ## 线性与对称
 
-$$a x_1[n]+b x_2[n]\ \longleftrightarrow\ aX_1[k]+bX_2[k]$$
+$$a x_1(n)+b x_2(n)\ \longleftrightarrow\ aX_1(k)+bX_2(k)$$
 
 实序列满足共轭对称：
 
-$$X[N-k]=X^*[k]$$
+$$X(N-k)=X^*(k)$$
 
 因此实信号的 DFT 只需存储前 $N/2+1$ 个点。
 
@@ -1293,7 +1293,7 @@ $$X[N-k]=X^*[k]$$
 
 时域循环移位对应频域乘旋转因子：
 
-$$x[(n-m)\bmod N]\ \longleftrightarrow\ W_N^{km}X[k]$$
+$$x((n-m)\bmod N)\ \longleftrightarrow\ W_N^{km}X(k)$$
 
 注意是**循环**移位：移出右端的样本会从左边回来，而不是补零。DFT 隐含了周期延拓的假设。
 
@@ -1301,11 +1301,11 @@ $$x[(n-m)\bmod N]\ \longleftrightarrow\ W_N^{km}X[k]$$
 
 时域循环卷积对应频域相乘：
 
-$$x[n]\circledast h[n]\ \longleftrightarrow\ X[k]H[k]$$
+$$x(n)\circledast h(n)\ \longleftrightarrow\ X(k)H(k)$$
 
 其中
 
-$$y[n]=\sum_{m=0}^{N-1}x[m]\,h[(n-m)\bmod N]$$
+$$y(n)=\sum_{m=0}^{N-1}x(m)\,h((n-m)\bmod N)$$
 
 这正是“频域相乘 = 时域卷积”的离散版本。但它是**循环**卷积，不是我们通常想要的线性卷积。
 
@@ -1317,11 +1317,11 @@ $$N\ge L+M-1$$
 
 再在频域相乘，结果的前 $L+M-1$ 个点就是线性卷积。
 
-例：$x=\{1,2,3,0\}$，$h=\{1,-1,0,0\}$，$N=4$ 的循环卷积结果为 $\{1,1,1,-3\}$，恰好等于线性卷积，因为 $L+M-1=4\le N$。若取 $N=3$，尾部 $-3$ 会绕回 $y[0]$，得到 $\{-2,1,1\}$，这就是循环混叠。
+例：$x=\{1,2,3,0\}$，$h=\{1,-1,0,0\}$，$N=4$ 的循环卷积结果为 $\{1,1,1,-3\}$，恰好等于线性卷积，因为 $L+M-1=4\le N$。若取 $N=3$，尾部 $-3$ 会绕回 $y(0)$，得到 $\{-2,1,1\}$，这就是循环混叠。
 
 ## Parseval 定理
 
-$$\sum_{n=0}^{N-1}|x[n]|^2=\frac{1}{N}\sum_{k=0}^{N-1}|X[k]|^2$$
+$$\sum_{n=0}^{N-1}|x(n)|^2=\frac{1}{N}\sum_{k=0}^{N-1}|X(k)|^2$$
 
 能量守恒。计算频域能量时不要漏掉 $1/N$。
 
@@ -1329,10 +1329,10 @@ $$\sum_{n=0}^{N-1}|x[n]|^2=\frac{1}{N}\sum_{k=0}^{N-1}|X[k]|^2$$
 
 | 性质 | 时域 | 频域 |
 | --- | --- | --- |
-| 反转 | $x[(-n)\bmod N]$ | $X[(-k)\bmod N]$ |
-| 共轭 | $x^*[n]$ | $X^*[(-k)\bmod N]$ |
-| 调制 | $W_N^{-n_0n}x[n]$ | $X[(k-n_0)\bmod N]$ |
-| 相乘 | $x[n]h[n]$ | $\frac{1}{N}X[k]\circledast H[k]$ |
+| 反转 | $x((-n)\bmod N)$ | $X((-k)\bmod N)$ |
+| 共轭 | $x^*(n)$ | $X^*((-k)\bmod N)$ |
+| 调制 | $W_N^{-n_0n}x(n)$ | $X((k-n_0)\bmod N)$ |
+| 相乘 | $x(n)h(n)$ | $\frac{1}{N}X(k)\circledast H(k)$ |
 
 > [!warn] 最常见错误
 > 用 FFT 做卷积时忘记补零，得到的结果尾部绕回开头。只要记住 $N\ge L+M-1$，就能避免。
@@ -1355,7 +1355,7 @@ $$\sum_{n=0}^{N-1}|x[n]|^2=\frac{1}{N}\sum_{k=0}^{N-1}|X[k]|^2$$
 
 DFT 假设信号以 $N$ 为周期无限延拓。实际采集时，我们只截取了有限长的一段，相当于把无限长信号乘以矩形窗：
 
-$$x_w[n]=x[n]\,w[n]$$
+$$x_w(n)=x(n)\,w(n)$$
 
 时域相乘对应频域卷积：
 
@@ -1395,7 +1395,7 @@ $$X_w(e^{j\omega})=\frac{1}{2\pi}X(e^{j\omega})*W(e^{j\omega})$$
 
 加窗会降低信号能量，需除以窗的相干增益：
 
-$$A_{\text{corr}}=\frac{2}{\sum_{n=0}^{N-1}w[n]}$$
+$$A_{\text{corr}}=\frac{2}{\sum_{n=0}^{N-1}w(n)}$$
 
 对 Hann 窗，相干增益约为 $N/2$，所以单频峰值修正后约为原幅值。不同窗的增益不同，画频谱前应统一归一化。
 
@@ -1440,17 +1440,17 @@ $N=1024$ 时约 $1024\times10=10240$ 次蝶形，快了约 100 倍。
 
 把 $N$ 点序列按偶、奇下标分成两个 $N/2$ 点序列：
 
-$$X[k]=E[k]+W_N^kO[k],\qquad k=0,\dots,N/2-1$$
+$$X(k)=E(k)+W_N^kO(k),\qquad k=0,\dots,N/2-1$$
 
-$$X[k+N/2]=E[k]-W_N^kO[k]$$
+$$X(k+N/2)=E(k)-W_N^kO(k)$$
 
-其中 $E[k]$、$O[k]$ 分别是偶、奇子序列的 DFT。一个 $N$ 点问题变成两个 $N/2$ 点问题，递归下去直到 2 点。
+其中 $E(k)$、$O(k)$ 分别是偶、奇子序列的 DFT。一个 $N$ 点问题变成两个 $N/2$ 点问题，递归下去直到 2 点。
 
 ## 蝶形运算
 
 上面的两个式子称为一个**蝶形**：
 
-- 输入 $E[k]$、$O[k]$，先乘旋转因子 $W_N^k$；
+- 输入 $E(k)$、$O(k)$，先乘旋转因子 $W_N^k$；
 - 再分别做加、减，得到上下两个输出。
 
 $N=8$ 时共有 $\log_2 8=3$ 级，每级 $N/2=4$ 个蝶形，共 12 个蝶形。
@@ -1575,13 +1575,13 @@ $$T_{\text{obs}}\gtrsim\frac{1}{\Delta f_{\text{sep}}}$$
 
 **FIR**（有限长冲激响应）只依赖输入的历史值：
 
-$$y[n]=\sum_{m=0}^{M}b_mx[n-m]$$
+$$y(n)=\sum_{m=0}^{M}b_mx(n-m)$$
 
 它的系统函数只有零点，没有非平凡极点，因此永远稳定，且容易实现严格线性相位。
 
 **IIR**（无限长冲激响应）含输出反馈：
 
-$$y[n]=-\sum_{k=1}^{N}a_ky[n-k]+\sum_{m=0}^{M}b_mx[n-m]$$
+$$y(n)=-\sum_{k=1}^{N}a_ky(n-k)+\sum_{m=0}^{M}b_mx(n-m)$$
 
 它的冲激响应无限延伸，可以用较少的阶数实现陡峭的过渡带，但存在稳定性与相位非线性问题。
 
@@ -1632,7 +1632,7 @@ IIR 的相位可以通过**全通滤波器**均衡，但会增加复杂度，且
     slug: "linear-phase",
     chapter: "filters",
     title: "线性相位与对称冲激响应",
-    summary: "h[n] 对称为什么就能线性相位？四种类型各自能设计什么滤波器。",
+    summary: "h(n) 对称为什么就能线性相位？四种类型各自能设计什么滤波器。",
     minutes: 9,
     level: "进阶",
     tags: ["线性相位", "对称"],
@@ -1647,7 +1647,7 @@ $$H(e^{j\omega})=\left|H(e^{j\omega})\right|e^{j\theta(\omega)}$$
 
 对实系数 FIR 滤波器，线性相位的充要条件是冲激响应满足对称或反对称：
 
-$$h[n]=\pm h[M-n],\qquad n=0,1,\dots,M$$
+$$h(n)=\pm h(M-n),\qquad n=0,1,\dots,M$$
 
 其中 $M$ 是滤波器阶数（长度为 $M+1$）。
 
@@ -1711,11 +1711,11 @@ $$H_d(e^{j\omega})=\begin{cases}1, & |\omega|\le\omega_c\\0, & \omega_c<|\omega|
 
 其冲激响应是无限长、非因果的 sinc：
 
-$$h_d[n]=\frac{\sin\!\left(\omega_c(n-\alpha)\right)}{\pi(n-\alpha)},\qquad \alpha=\frac{M}{2}$$
+$$h_d(n)=\frac{\sin\!\left(\omega_c(n-\alpha)\right)}{\pi(n-\alpha)},\qquad \alpha=\frac{M}{2}$$
 
 实际滤波器只能取有限长、因果的实现。最直接的办法是**加窗截断并移位**：
 
-$$h[n]=h_d[n-\alpha]\,w[n],\qquad n=0,1,\dots,M$$
+$$h(n)=h_d(n-\alpha)\,w(n),\qquad n=0,1,\dots,M$$
 
 ## 窗如何影响指标
 
@@ -1736,7 +1736,7 @@ $$h[n]=h_d[n-\alpha]\,w[n],\qquad n=0,1,\dots,M$$
 1. 由指标确定归一化截止频率 $\omega_c$（rad/sample）。
 2. 选择窗类型，使阻带衰减满足要求。
 3. 由过渡带宽度估算阶数 $M$。
-4. 计算 $h_d[n]$，加窗、移位。
+4. 计算 $h_d(n)$，加窗、移位。
 5. 计算频率响应，检查是否满足指标；不满足则增大 $M$ 或换窗。
 
 ## Kaiser 窗的估算
@@ -1876,7 +1876,7 @@ $$z_p=\frac{2-\Omega_c}{2+\Omega_c}$$
 
 把差分方程直接画成延迟线、乘法器和加法器：
 
-$$y[n]=\sum_{m=0}^{M}b_mx[n-m]-\sum_{k=1}^{N}a_ky[n-k]$$
+$$y(n)=\sum_{m=0}^{M}b_mx(n-m)-\sum_{k=1}^{N}a_ky(n-k)$$
 
 需要 $M+N$ 个延迟单元、$M+N+1$ 次乘法。结构直观，但系数直接决定零极点位置，高阶时对系数量化非常敏感。
 
@@ -1884,9 +1884,9 @@ $$y[n]=\sum_{m=0}^{M}b_mx[n-m]-\sum_{k=1}^{N}a_ky[n-k]$$
 
 利用 $H(z)=\dfrac{B(z)}{A(z)}$，先实现分母再实现分子，可以共享延迟线：
 
-$$w[n]=x[n]-\sum_{k=1}^{N}a_kw[n-k]$$
+$$w(n)=x(n)-\sum_{k=1}^{N}a_kw(n-k)$$
 
-$$y[n]=\sum_{m=0}^{M}b_mw[n-m]$$
+$$y(n)=\sum_{m=0}^{M}b_mw(n-m)$$
 
 延迟单元减少到 $\max(M,N)$ 个，是工程上最常用的形式之一（也称正准型）。
 
@@ -2028,7 +2028,7 @@ $$\tau_g(\omega)=-\frac{d\theta(\omega)}{d\omega}$$
 
 每 $M$ 个样本保留一个：
 
-$$y[n]=x[Mn]$$
+$$y(n)=x(Mn)$$
 
 频域关系为
 
@@ -2036,13 +2036,13 @@ $$Y(e^{j\omega})=\frac{1}{M}\sum_{k=0}^{M-1}X\!\left(e^{j(\omega-2\pi k)/M}\righ
 
 频谱被拉伸 $M$ 倍并叠加。若原信号带宽超过 $\pi/M$，高频会折叠到低频，产生混叠。因此抽取前必须先低通滤波，截止频率为 $\pi/M$：
 
-$$x[n]\ \longrightarrow\ \boxed{H_{\text{LP}}(\omega_c=\pi/M)}\ \longrightarrow\ \downarrow M\ \longrightarrow\ y[n]$$
+$$x(n)\ \longrightarrow\ \boxed{H_{\text{LP}}(\omega_c=\pi/M)}\ \longrightarrow\ \downarrow M\ \longrightarrow\ y(n)$$
 
 ## 插值（Upsampling）
 
 在样本间插入 $L-1$ 个零：
 
-$$y[n]=\begin{cases}x[n/L], & n=0,\pm L,\pm2L,\dots\\0, & \text{其他}\end{cases}$$
+$$y(n)=\begin{cases}x(n/L), & n=0,\pm L,\pm2L,\dots\\0, & \text{其他}\end{cases}$$
 
 频域变为
 
@@ -2050,7 +2050,7 @@ $$Y(e^{j\omega})=X(e^{j\omega L})$$
 
 频谱被压缩 $L$ 倍，出现 $L-1$ 个镜像。需要用低通滤波器（截止 $\pi/L$）去掉镜像，并补偿幅度 $L$：
 
-$$x[n]\ \longrightarrow\ \uparrow L\ \longrightarrow\ \boxed{H_{\text{LP}}(\omega_c=\pi/L,\ \text{增益 }L)}\ \longrightarrow\ y[n]$$
+$$x(n)\ \longrightarrow\ \uparrow L\ \longrightarrow\ \boxed{H_{\text{LP}}(\omega_c=\pi/L,\ \text{增益 }L)}\ \longrightarrow\ y(n)$$
 
 ## 有理数倍采样率转换
 
@@ -2096,24 +2096,24 @@ $$H(z)=\sum_{k=0}^{L-1}z^{-k}E_k(z^L)$$
     body: String.raw`
 ## 自适应滤波的框架
 
-自适应滤波器让系数 $w[n]$ 随输入不断更新，以最小化误差。典型结构：
+自适应滤波器让系数 $w(n)$ 随输入不断更新，以最小化误差。典型结构：
 
-$$y[n]=\mathbf{w}^T[n]\,\mathbf{x}[n]$$
+$$y(n)=\mathbf{w}^T(n)\,\mathbf{x}(n)$$
 
-$$e[n]=d[n]-y[n]$$
+$$e(n)=d(n)-y(n)$$
 
-其中 $d[n]$ 是期望信号（参考信号），$e[n]$ 是误差。滤波器根据 $e[n]$ 调整 $\mathbf{w}$，使均方误差 $E[e^2]$ 最小。
+其中 $d(n)$ 是期望信号（参考信号），$e(n)$ 是误差。滤波器根据 $e(n)$ 调整 $\mathbf{w}$，使均方误差 $E(e^2)$ 最小。
 
 ## LMS 算法
 
 最小均方（LMS）用瞬时误差的梯度近似真实梯度：
 
-$$\mathbf{w}[n+1]=\mathbf{w}[n]+2\mu\,e[n]\,\mathbf{x}[n]$$
+$$\mathbf{w}(n+1)=\mathbf{w}(n)+2\mu\,e(n)\,\mathbf{x}(n)$$
 
 其中 $\mu$ 是步长。三步循环：
 
-1. 计算输出 $y[n]=\mathbf{w}^T\mathbf{x}[n]$。
-2. 计算误差 $e[n]=d[n]-y[n]$。
+1. 计算输出 $y(n)=\mathbf{w}^T\mathbf{x}(n)$。
+2. 计算误差 $e(n)=d(n)-y(n)$。
 3. 更新系数 $\mathbf{w}\leftarrow\mathbf{w}+2\mu e\mathbf{x}$。
 
 LMS 不需要知道信号的统计特性，计算简单，是工程上最常用的自适应算法。
@@ -2141,7 +2141,7 @@ $M$ 是滤波器长度，$\sigma_x^2$ 是输入功率。$\mu$ 太大振荡发散
 
 NLMS 用输入能量归一化步长：
 
-$$\mathbf{w}[n+1]=\mathbf{w}[n]+\frac{\mu}{\|\mathbf{x}[n]\|^2+\epsilon}\,e[n]\,\mathbf{x}[n]$$
+$$\mathbf{w}(n+1)=\mathbf{w}(n)+\frac{\mu}{\|\mathbf{x}(n)\|^2+\epsilon}\,e(n)\,\mathbf{x}(n)$$
 
 它对输入功率变化不敏感，步长选择更容易，广泛用于回声消除与主动降噪。
 
@@ -2174,7 +2174,7 @@ $$\mathbf{w}[n+1]=\mathbf{w}[n]+\frac{\mu}{\|\mathbf{x}[n]\|^2+\epsilon}\,e[n]\,
 
 最直接的谱估计是周期图：
 
-$$\hat{P}(\omega)=\frac{1}{N}\left|\sum_{n=0}^{N-1}x[n]e^{-j\omega n}\right|^2$$
+$$\hat{P}(\omega)=\frac{1}{N}\left|\sum_{n=0}^{N-1}x(n)e^{-j\omega n}\right|^2$$
 
 它就是 DFT 幅度平方除以 $N$。实现简单，但有两个问题：
 
@@ -2203,7 +2203,7 @@ $$\hat{P}_{\text{avg}}(\omega)=\frac{1}{K}\sum_{k=1}^{K}\hat{P}_k(\omega)$$
 
 假设信号由白噪声激励一个全极点系统产生：
 
-$$x[n]=-\sum_{k=1}^{p}a_kx[n-k]+u[n]$$
+$$x(n)=-\sum_{k=1}^{p}a_kx(n-k)+u(n)$$
 
 估计 AR 系数后，功率谱为
 

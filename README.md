@@ -104,6 +104,7 @@ dsp-site/
    │  ├─ data-notes.js        # 6 个章节 + 31 篇笔记正文
    │  ├─ data-formulas.js     # 9 组共 56 条公式
    │  ├─ data-quiz.js         # 48 道练习题
+   │  ├─ data-exercises.js    # 12 道期末计算题（分步解答）
    │  ├─ markdown.js          # 轻量 Markdown + KaTeX 渲染
    │  ├─ lab.js               # 5 个 Canvas 交互实验
    │  └─ app.js               # 路由、各页面视图、题库逻辑、主题等

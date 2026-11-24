@@ -17,6 +17,7 @@
     activity: "spx.activity",
     attempts: "spx.attempts",
     size: "spx.readingSize",
+    ex: "spx.exercises",
   };
 
   function load(key, fallback) {
@@ -304,6 +305,7 @@
     lab: "交互实验室",
     quiz: "题库",
     mistakes: "错题本",
+    exercises: "计算题",
   };
 
   function updateChrome(route) {
@@ -355,7 +357,8 @@
       if (route.parts[1] === "play") view = viewQuizPlay();
       else if (route.parts[1] === "result") view = viewQuizResult();
       else view = viewQuizHome();
-    } else if (key === "mistakes") view = viewMistakes();
+    } else if (key === "exercises") view = viewExercises(route.query);
+    else if (key === "mistakes") view = viewMistakes();
     else view = viewNotFound();
 
     if (!view) return;
@@ -447,8 +450,8 @@
               <path d="M16 46V20M32 46V34M48 46V10M64 46V28M80 46V16M96 46V38M112 46V24M128 46V6M144 46V31M160 46V19M176 46V40M192 46V26M208 46V12M224 46V33M240 46V21M256 46V37M272 46V15M288 46V28M304 46V9M320 46V34M336 46V22M352 46V39M368 46V17M384 46V30M400 46V11M416 46V36M432 46V25M448 46V14M464 46V41M480 46V29" stroke="url(#barFill)" stroke-width="7"/>
             </g>
             <g font-family="monospace" font-size="9.5" fill="rgba(191,219,254,.62)">
-              <text x="406" y="34">x[n]</text>
-              <text x="406" y="82">|X[k]|</text>
+              <text x="406" y="34">x(n)</text>
+              <text x="406" y="82">|X(k)|</text>
               <text x="18" y="250">0</text>
               <text x="470" y="250">f</text>
             </g>
@@ -958,6 +961,83 @@
           layout.removeEventListener("click", onLayoutClick);
           document.removeEventListener("click", onDocClick);
         };
+      },
+    };
+  }
+
+  /* ========================================================================
+     期末计算题（分步解答 + 自评）
+     ======================================================================== */
+
+  function viewExercises(query) {
+    const st = load(STORE.ex, {});
+    const ch = query.get("ch") || "all";
+    const list = EXERCISES.filter((e) => ch === "all" || e.chapter === ch);
+    const done = EXERCISES.filter((e) => st[e.id] === "ok").length;
+    const chips = [
+      `<button class="chip ${ch === "all" ? "active" : ""}" data-ch="all" type="button">全部 <span class="count">${EXERCISES.length}</span></button>`,
+      ...CHAPTERS.map((c) => {
+        const n = EXERCISES.filter((e) => e.chapter === c.id).length;
+        return n ? `<button class="chip ${ch === c.id ? "active" : ""}" data-ch="${c.id}" type="button">${esc(c.short)} <span class="count">${n}</span></button>` : "";
+      }),
+    ].join("");
+    const cards = list
+      .map((e) => {
+        const c = CHAPTER_MAP.get(e.chapter);
+        const mark = st[e.id];
+        return `
+        <article class="card ex-card" data-ex="${e.id}">
+          <div class="ex-head">
+            <span class="tag" style="${chapterStyle(c)}">${esc(c.short)}</span>
+            <span class="tag">${esc(e.difficulty)}</span>
+            <strong>${esc(e.title)}</strong>
+            <span class="ex-mark">${mark === "ok" ? "✓ 已掌握" : mark === "again" ? "⟲ 再练" : ""}</span>
+          </div>
+          <p class="ex-q">${MD.inline(e.question)}</p>
+          <details class="ex-sol">
+            <summary>查看分步解答</summary>
+            <ol>${e.steps.map((t) => `<li>${MD.inline(t)}</li>`).join("")}</ol>
+            <p class="ex-ans"><strong>答案：</strong>${MD.inline(e.answer)}</p>
+            <p class="ex-trap"><strong>易错点：</strong>${MD.inline(e.trap)}</p>
+            <div class="ex-btns">
+              <button class="chip" data-mark="ok" type="button">我做对了</button>
+              <button class="chip" data-mark="again" type="button">还要再练</button>
+            </div>
+          </details>
+        </article>`;
+      })
+      .join("");
+    const html = `
+      <section class="page-head">
+        <div>
+          <span class="eyebrow">EXERCISES · ${EXERCISES.length} 题</span>
+          <h1 class="page-title">期末计算题</h1>
+          <p class="page-sub">符号以吴镇扬教材为准。先自己动笔，再展开解答对照，最后自评。</p>
+        </div>
+        <span class="tag tag-blue">已掌握 ${done} / ${EXERCISES.length}</span>
+      </section>
+      <details class="card ex-tips" open><summary>答题套路（考前必看）</summary>
+        <ul>${EXERCISE_TIPS.map((t) => `<li>${MD.inline(t)}</li>`).join("")}</ul>
+      </details>
+      <div class="chip-row" id="ex-chips" style="margin:16px 0">${chips}</div>
+      <div class="ex-list">${cards}</div>`;
+    return {
+      title: "期末计算题",
+      html,
+      init() {
+        $$("#ex-chips [data-ch]").forEach((b) =>
+          b.addEventListener("click", () => go(b.dataset.ch === "all" ? "#/exercises" : `#/exercises?ch=${b.dataset.ch}`))
+        );
+        $$(".ex-card [data-mark]").forEach((b) =>
+          b.addEventListener("click", () => {
+            const id = b.closest(".ex-card").dataset.ex;
+            const cur = load(STORE.ex, {});
+            cur[id] = b.dataset.mark;
+            save(STORE.ex, cur);
+            b.closest(".ex-card").querySelector(".ex-mark").textContent = b.dataset.mark === "ok" ? "✓ 已掌握" : "⟲ 再练";
+            toast(b.dataset.mark === "ok" ? "已记录：掌握" : "已记录：稍后再练");
+          })
+        );
       },
     };
   }

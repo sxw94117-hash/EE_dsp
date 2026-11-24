@@ -8,27 +8,27 @@ const FORMULA_GROUPS = [
     items: [
       {
         name: "脉冲筛选",
-        tex: String.raw`\sum_{n=-\infty}^{\infty}x[n]\,\delta[n-n_0]=x[n_0]`,
+        tex: String.raw`\sum_{n=-\infty}^{\infty}x(n)\,\delta(n-n_0)=x(n_0)`,
         note: "任意序列可分解为移位脉冲的加权和，这是卷积的起点。",
       },
       {
         name: "离散卷积",
-        tex: String.raw`y[n]=x[n]*h[n]=\sum_{k=-\infty}^{\infty}x[k]\,h[n-k]`,
+        tex: String.raw`y(n)=x(n)*h(n)=\sum_{k=-\infty}^{\infty}x(k)\,h(n-k)`,
         note: "翻转、移位、相乘、求和。有限长序列卷积长度为 L+M-1。",
       },
       {
         name: "BIBO 稳定",
-        tex: String.raw`\sum_{n=-\infty}^{\infty}\left|h[n]\right|<\infty`,
+        tex: String.raw`\sum_{n=-\infty}^{\infty}\left|h(n)\right|<\infty`,
         note: "冲激响应绝对可和，等价于有界输入产生有界输出。",
       },
       {
         name: "能量与功率",
-        tex: String.raw`E=\sum_{n=-\infty}^{\infty}\left|x[n]\right|^2,\qquad P=\lim_{N\to\infty}\frac{1}{2N+1}\sum_{n=-N}^{N}\left|x[n]\right|^2`,
+        tex: String.raw`E=\sum_{n=-\infty}^{\infty}\left|x(n)\right|^2,\qquad P=\lim_{N\to\infty}\frac{1}{2N+1}\sum_{n=-N}^{N}\left|x(n)\right|^2`,
         note: "能量信号总能量有限、平均功率为零；周期信号通常是功率信号。",
       },
       {
         name: "自相关",
-        tex: String.raw`r_{xx}[l]=\sum_{n=-\infty}^{\infty}x[n]\,x[n-l]`,
+        tex: String.raw`r_{xx}(l)=\sum_{n=-\infty}^{\infty}x(n)\,x(n-l)`,
         note: "实序列自相关偶对称，零延迟处取得最大值。",
       },
     ],
@@ -70,7 +70,7 @@ const FORMULA_GROUPS = [
       },
       {
         name: "理想重建",
-        tex: String.raw`x(t)=\sum_{n=-\infty}^{\infty}x[n]\,\operatorname{sinc}\!\left(\frac{t-nT_s}{T_s}\right)`,
+        tex: String.raw`x(t)=\sum_{n=-\infty}^{\infty}x(n)\,\operatorname{sinc}\!\left(\frac{t-nT_s}{T_s}\right)`,
         note: "理想低通重建；实际 DAC 用零阶保持，频率响应带 sinc 滚降。",
       },
     ],
@@ -82,12 +82,12 @@ const FORMULA_GROUPS = [
     items: [
       {
         name: "z 变换定义",
-        tex: String.raw`X(z)=\sum_{n=-\infty}^{\infty}x[n]\,z^{-n},\qquad z=re^{j\omega}`,
+        tex: String.raw`X(z)=\sum_{n=-\infty}^{\infty}x(n)\,z^{-n},\qquad z=re^{j\omega}`,
         note: "必须同时给出收敛域 ROC，否则无法唯一确定序列。",
       },
       {
         name: "基本变换对",
-        tex: String.raw`a^nu[n]\ \longleftrightarrow\ \frac{1}{1-az^{-1}},\qquad |z|>|a|`,
+        tex: String.raw`a^nu(n)\ \longleftrightarrow\ \frac{1}{1-az^{-1}},\qquad |z|>|a|`,
         note: "极点位于 z=a；右边序列的 ROC 是圆外区域。",
       },
       {
@@ -107,7 +107,7 @@ const FORMULA_GROUPS = [
       },
       {
         name: "部分分式",
-        tex: String.raw`X(z)=\sum_{i}\frac{A_i}{1-p_iz^{-1}}\ \Longrightarrow\ x[n]=\sum_i A_i\,p_i^n u[n]`,
+        tex: String.raw`X(z)=\sum_{i}\frac{A_i}{1-p_iz^{-1}}\ \Longrightarrow\ x(n)=\sum_i A_i\,p_i^n u(n)`,
         note: "上式对应 ROC 在最外层极点之外的右边序列；左边序列方向相反。",
       },
     ],
@@ -119,22 +119,22 @@ const FORMULA_GROUPS = [
     items: [
       {
         name: "DTFT",
-        tex: String.raw`X(e^{j\omega})=\sum_{n=-\infty}^{\infty}x[n]\,e^{-j\omega n}`,
+        tex: String.raw`X(e^{j\omega})=\sum_{n=-\infty}^{\infty}x(n)\,e^{-j\omega n}`,
         note: "时域离散导致频谱以 2π 为周期；主值区间通常取 [−π, π]。",
       },
       {
         name: "DTFT 逆变换",
-        tex: String.raw`x[n]=\frac{1}{2\pi}\int_{-\pi}^{\pi}X(e^{j\omega})\,e^{j\omega n}\,d\omega`,
+        tex: String.raw`x(n)=\frac{1}{2\pi}\int_{-\pi}^{\pi}X(e^{j\omega})\,e^{j\omega n}\,d\omega`,
         note: "频域连续、周期；与 z 变换在单位圆上的取值一致。",
       },
       {
         name: "DFT",
-        tex: String.raw`X[k]=\sum_{n=0}^{N-1}x[n]\,W_N^{nk},\qquad W_N=e^{-j2\pi/N}`,
+        tex: String.raw`X(k)=\sum_{n=0}^{N-1}x(n)\,W_N^{nk},\qquad W_N=e^{-j2\pi/N}`,
         note: "N 点 DFT 把 N 个时域样本映射为 N 个频域复数，可逆。",
       },
       {
         name: "IDFT",
-        tex: String.raw`x[n]=\frac{1}{N}\sum_{k=0}^{N-1}X[k]\,W_N^{-nk}`,
+        tex: String.raw`x(n)=\frac{1}{N}\sum_{k=0}^{N-1}X(k)\,W_N^{-nk}`,
         note: "正变换不除以 N，逆变换除以 N；不同教材的归一化约定可能不同。",
       },
       {
@@ -149,12 +149,12 @@ const FORMULA_GROUPS = [
       },
       {
         name: "循环卷积",
-        tex: String.raw`y[n]=\sum_{m=0}^{N-1}x[m]\,h[(n-m)\bmod N]\ \longleftrightarrow\ X[k]H[k]`,
+        tex: String.raw`y(n)=\sum_{m=0}^{N-1}x(m)\,h((n-m)\bmod N)\ \longleftrightarrow\ X(k)H(k)`,
         note: "用 FFT 做线性卷积时，需补零到 N ≥ L+M−1，避免尾部绕回。",
       },
       {
         name: "DFT Parseval",
-        tex: String.raw`\sum_{n=0}^{N-1}\left|x[n]\right|^2=\frac{1}{N}\sum_{k=0}^{N-1}\left|X[k]\right|^2`,
+        tex: String.raw`\sum_{n=0}^{N-1}\left|x(n)\right|^2=\frac{1}{N}\sum_{k=0}^{N-1}\left|X(k)\right|^2`,
         note: "能量守恒；频域求和别忘了 1/N。",
       },
       {
@@ -171,27 +171,27 @@ const FORMULA_GROUPS = [
     items: [
       {
         name: "矩形窗",
-        tex: String.raw`w[n]=1,\quad 0\le n\le N-1`,
+        tex: String.raw`w(n)=1,\quad 0\le n\le N-1`,
         note: "主瓣最窄（约 4π/N），旁瓣最高（−13 dB），泄漏最严重。",
       },
       {
         name: "Hann 窗",
-        tex: String.raw`w[n]=0.5-0.5\cos\!\left(\frac{2\pi n}{N-1}\right)`,
+        tex: String.raw`w(n)=0.5-0.5\cos\!\left(\frac{2\pi n}{N-1}\right)`,
         note: "主瓣约 8π/N，最高旁瓣 −31 dB，通用频谱分析首选。",
       },
       {
         name: "Hamming 窗",
-        tex: String.raw`w[n]=0.54-0.46\cos\!\left(\frac{2\pi n}{N-1}\right)`,
+        tex: String.raw`w(n)=0.54-0.46\cos\!\left(\frac{2\pi n}{N-1}\right)`,
         note: "主瓣约 8π/N，最高旁瓣 −43 dB，比 Hann 旁瓣更低。",
       },
       {
         name: "Blackman 窗",
-        tex: String.raw`w[n]=0.42-0.5\cos\!\left(\frac{2\pi n}{N-1}\right)+0.08\cos\!\left(\frac{4\pi n}{N-1}\right)`,
+        tex: String.raw`w(n)=0.42-0.5\cos\!\left(\frac{2\pi n}{N-1}\right)+0.08\cos\!\left(\frac{4\pi n}{N-1}\right)`,
         note: "主瓣约 12π/N，最高旁瓣 −58 dB，适合弱信号检测。",
       },
       {
         name: "Kaiser 窗",
-        tex: String.raw`w[n]=\frac{I_0\!\left(\beta\sqrt{1-\left(\frac{2n}{N-1}-1\right)^2}\right)}{I_0(\beta)}`,
+        tex: String.raw`w(n)=\frac{I_0\!\left(\beta\sqrt{1-\left(\frac{2n}{N-1}-1\right)^2}\right)}{I_0(\beta)}`,
         note: "β 可调，在旁瓣与主瓣之间连续折中；I₀ 为零阶修正贝塞尔函数。",
       },
       {
@@ -208,17 +208,17 @@ const FORMULA_GROUPS = [
     items: [
       {
         name: "理想低通冲激响应",
-        tex: String.raw`h_d[n]=\frac{\sin\!\left(\omega_c(n-\alpha)\right)}{\pi(n-\alpha)},\qquad \alpha=\frac{M}{2}`,
+        tex: String.raw`h_d(n)=\frac{\sin\!\left(\omega_c(n-\alpha)\right)}{\pi(n-\alpha)},\qquad \alpha=\frac{M}{2}`,
         note: "无限长、非因果；实际设计需截断并右移 α。",
       },
       {
         name: "窗函数法",
-        tex: String.raw`h[n]=h_d[n-\alpha]\,w[n],\qquad n=0,1,\dots,M`,
+        tex: String.raw`h(n)=h_d(n-\alpha)\,w(n),\qquad n=0,1,\dots,M`,
         note: "窗的主瓣决定过渡带，旁瓣决定阻带衰减。",
       },
       {
         name: "线性相位条件",
-        tex: String.raw`h[n]=\pm h[M-n]`,
+        tex: String.raw`h(n)=\pm h(M-n)`,
         note: "实系数 FIR 对称或反对称，即可获得严格线性相位。",
       },
       {
@@ -287,12 +287,12 @@ const FORMULA_GROUPS = [
     items: [
       {
         name: "抽取",
-        tex: String.raw`y[n]=x[Mn]\quad\Longrightarrow\quad Y(e^{j\omega})=\frac{1}{M}\sum_{k=0}^{M-1}X\!\left(e^{j(\omega-2\pi k)/M}\right)`,
+        tex: String.raw`y(n)=x(Mn)\quad\Longrightarrow\quad Y(e^{j\omega})=\frac{1}{M}\sum_{k=0}^{M-1}X\!\left(e^{j(\omega-2\pi k)/M}\right)`,
         note: "频谱拉伸并叠加；抽取前需低通到 π/M，防止混叠。",
       },
       {
         name: "插值",
-        tex: String.raw`y[n]=\begin{cases}x[n/L], & n=0,\pm L,\pm2L,\dots\\0, & \text{其他}\end{cases}\quad\Longrightarrow\quad Y(e^{j\omega})=X(e^{j\omega L})`,
+        tex: String.raw`y(n)=\begin{cases}x(n/L), & n=0,\pm L,\pm2L,\dots\\0, & \text{其他}\end{cases}\quad\Longrightarrow\quad Y(e^{j\omega})=X(e^{j\omega L})`,
         note: "补零后频谱压缩并产生镜像；需低通到 π/L 并补偿增益 L。",
       },
       {
@@ -314,8 +314,8 @@ const FORMULA_GROUPS = [
     items: [
       {
         name: "LMS 更新",
-        tex: String.raw`\mathbf{w}[n+1]=\mathbf{w}[n]+2\mu\,e[n]\,\mathbf{x}[n]`,
-        note: "e[n]=d[n]−wᵀx[n]。步长 μ 决定收敛速度与稳态误差。",
+        tex: String.raw`\mathbf{w}(n+1)=\mathbf{w}(n)+2\mu\,e(n)\,\mathbf{x}(n)`,
+        note: "e(n)=d(n)−wᵀx(n)。步长 μ 决定收敛速度与稳态误差。",
       },
       {
         name: "LMS 步长范围",
@@ -324,12 +324,12 @@ const FORMULA_GROUPS = [
       },
       {
         name: "NLMS",
-        tex: String.raw`\mathbf{w}[n+1]=\mathbf{w}[n]+\frac{\mu}{\|\mathbf{x}[n]\|^2+\epsilon}\,e[n]\,\mathbf{x}[n]`,
+        tex: String.raw`\mathbf{w}(n+1)=\mathbf{w}(n)+\frac{\mu}{\|\mathbf{x}(n)\|^2+\epsilon}\,e(n)\,\mathbf{x}(n)`,
         note: "按输入能量归一化，对输入功率变化不敏感。",
       },
       {
         name: "周期图",
-        tex: String.raw`\hat{P}(\omega)=\frac{1}{N}\left|\sum_{n=0}^{N-1}x[n]e^{-j\omega n}\right|^2`,
+        tex: String.raw`\hat{P}(\omega)=\frac{1}{N}\left|\sum_{n=0}^{N-1}x(n)e^{-j\omega n}\right|^2`,
         note: "实现简单但方差大；分段平均（Welch）可显著降低方差。",
       },
       {

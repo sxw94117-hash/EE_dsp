@@ -146,7 +146,7 @@ const LABS = [
     color: "#0f9f74",
     tags: ["频域", "窗函数"],
     chapter: "fourier",
-    formula: String.raw`X[k]=\sum_{n=0}^{N-1}x[n]w[n]\,e^{-j2\pi kn/N}`,
+    formula: String.raw`X(k)=\sum_{n=0}^{N-1}x(n)w(n)\,e^{-j2\pi kn/N}`,
     points: [
       "频率未落在 bin 上时，矩形窗会把能量泄漏到很远的旁瓣。",
       "Hann / Hamming 用更宽的主瓣换取更低的旁瓣。",
@@ -368,18 +368,18 @@ const LABS = [
     color: "#b45309",
     tags: ["FIR", "窗函数法"],
     chapter: "filters",
-    formula: String.raw`h[n]=2f_c\,\operatorname{sinc}\!\left(2f_c(n-\alpha)\right)w[n],\qquad \alpha=\frac{M}{2}`,
+    formula: String.raw`h(n)=2f_c\,\operatorname{sinc}\!\left(2f_c(n-\alpha)\right)w(n),\qquad \alpha=\frac{M}{2}`,
     points: [
       "阶数越高，过渡带越窄，但群延迟 M/2 也越大。",
       "Hann / Hamming 降低旁瓣，代价是主瓣变宽。",
-      "线性相位来自 h[n] 的对称性，所有频率共享同一个延迟。",
+      "线性相位来自 h(n) 的对称性，所有频率共享同一个延迟。",
     ],
     render() {
       return demoShell(
         "fir",
         "冲激响应与幅频响应",
-        "上：h[n]（对称）　下：归一化幅度响应（dB）",
-        `<span><i style="--c:var(--primary)"></i>h[n] / |H|</span>
+        "上：h(n)（对称）　下：归一化幅度响应（dB）",
+        `<span><i style="--c:var(--primary)"></i>h(n) / |H|</span>
          <span><i class="dashed" style="--c:var(--red)"></i>截止频率</span>
          <span><i class="dashed" style="--c:var(--faint)"></i>−3 dB</span>`,
         `
@@ -553,29 +553,29 @@ const LABS = [
   {
     id: "convolution",
     title: "卷积滑动演示",
-    short: "拖动 n，观察 h[n−k] 如何滑过 x[k]，并逐步累积出 y[n]。",
+    short: "拖动 n，观察 h(n−k) 如何滑过 x(k)，并逐步累积出 y(n)。",
     desc: "选择输入序列与系统冲激响应，拖动时间索引，看翻转、移位、相乘、求和四个步骤如何发生。",
     icon: "wave",
     color: "#2563eb",
     tags: ["时域", "卷积"],
     chapter: "basics",
-    formula: String.raw`y[n_0]=\sum_{k}x[k]\,h[n_0-k]`,
+    formula: String.raw`y(n_0)=\sum_{k}x(k)\,h(n_0-k)`,
     points: [
-      "中间图的 h[n₀−k] 是翻转后再右移 n₀ 的结果。",
-      "只有 x[k] 与 h[n₀−k] 同时非零的 k 才会贡献 y[n₀]。",
+      "中间图的 h(n₀−k) 是翻转后再右移 n₀ 的结果。",
+      "只有 x(k) 与 h(n₀−k) 同时非零的 k 才会贡献 y(n₀)。",
       "有限长序列卷积长度为 L+M−1，超出范围的点自然为零。",
     ],
     render() {
       return demoShell(
         "conv",
         "卷积的图解法",
-        "上：x[k]　中：翻转并移位的 h[n₀−k]　下：完整输出 y[n]",
-        `<span><i style="--c:var(--primary)"></i>x[k] / y[n]</span>
-         <span><i style="--c:var(--amber)"></i>h[n₀−k]</span>
+        "上：x(k)　中：翻转并移位的 h(n₀−k)　下：完整输出 y(n)",
+        `<span><i style="--c:var(--primary)"></i>x(k) / y(n)</span>
+         <span><i style="--c:var(--amber)"></i>h(n₀−k)</span>
          <span><i class="dot" style="--c:var(--red)"></i>当前 n₀</span>`,
         `
         <div class="control">
-          <div class="control-head"><span>输入序列 x[n]</span></div>
+          <div class="control-head"><span>输入序列 x(n)</span></div>
           <select class="input-select" id="conv-x">
             <option value="pulse" selected>矩形脉冲（长度 5）</option>
             <option value="decay">指数衰减 0.7ⁿ</option>
@@ -583,7 +583,7 @@ const LABS = [
           </select>
         </div>
         <div class="control">
-          <div class="control-head"><span>系统冲激响应 h[n]</span></div>
+          <div class="control-head"><span>系统冲激响应 h(n)</span></div>
           <select class="input-select" id="conv-h">
             <option value="average" selected>5 点滑动平均</option>
             <option value="exp">指数衰减</option>
@@ -666,7 +666,7 @@ const LABS = [
         drawXAxisLabels(g, boxX, 0, K - 1, 5, (v) => "k=" + Math.round(v), colors);
         drawYAxisLabels(g, boxX, -hmax * 1.15, hmax * 1.15, 2, colors, (v) => v.toFixed(1));
         drawStems(g, x, 0, boxX, 0, K - 1, -hmax * 1.15, hmax * 1.15, colors.primary);
-        panelLabel(g, boxX, "x[k]", colors);
+        panelLabel(g, boxX, "x(k)", colors);
 
         // h[n0-k]
         const boxH = { l: 48, r: w - 16, t: h * 0.35, b: h * 0.61 };
@@ -713,7 +713,7 @@ const LABS = [
         g.beginPath();
         g.arc(nx, ny, 4.5, 0, Math.PI * 2);
         g.fill();
-        panelLabel(g, boxY, "y[n]", colors);
+        panelLabel(g, boxY, "y(n)", colors);
 
         const overlap = Math.max(0, hi - lo + 1);
         overlapEl.textContent = String(overlap);
@@ -722,7 +722,7 @@ const LABS = [
         status.className = "status-line";
         const terms = [];
         for (let k = lo; k <= hi; k++) terms.push(`${x[k].toFixed(2)}×${hh[n0 - k].toFixed(2)}`);
-        status.innerHTML = `<strong>y[${n0}] = ${y[n0].toFixed(3)}</strong>　= ${terms.length ? terms.join(" + ") : "0（无重叠）"}`;
+        status.innerHTML = `<strong>y(${n0}) = ${y[n0].toFixed(3)}</strong>　= ${terms.length ? terms.join(" + ") : "0（无重叠）"}`;
         repaint();
       }
 

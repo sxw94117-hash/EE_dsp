@@ -3961,3 +3961,17 @@ select.input-select:focus {
     page-break-inside: avoid;
   }
 }
+
+/* 期末计算题 */
+.ex-list{display:grid;gap:14px}
+.ex-card{padding:16px 18px}
+.ex-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ex-mark{margin-left:auto;font-size:.85rem;color:var(--primary)}
+.ex-q{margin:12px 0}
+.ex-sol summary,.ex-tips summary{cursor:pointer;font-weight:600;color:var(--primary)}
+.ex-sol ol{padding-left:1.3em;margin:10px 0}
+.ex-sol li{margin:6px 0}
+.ex-trap{color:var(--muted,#64748b)}
+.ex-btns{display:flex;gap:8px;margin-top:10px}
+.ex-tips{padding:14px 18px;margin-top:6px}
+.ex-tips ul{padding-left:1.2em;margin:10px 0 0}
